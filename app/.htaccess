@@ -1,0 +1,39 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    RewriteRule ^accueil$ index.php?page=home [NC,QSA,L]
+    RewriteRule ^mentions-legales$ index.php?page=terms_of_use [NC,QSA,L]
+    RewriteRule ^politique-de-confidentialite$ index.php?page=privacy_policy [NC,QSA,L]
+
+    RewriteRule ^inscription$ index.php?page=register [NC,QSA,L]
+    RewriteRule ^connexion$ index.php?page=login [NC,QSA,L]
+    RewriteRule ^deconnexion$ index.php?page=logout [NC,QSA,L]
+    RewriteRule ^compte$ index.php?page=account [NC,QSA,L]
+
+    RewriteRule ^tickets/?$ index.php?page=ticket_index [NC,QSA,L]
+    RewriteRule ^tickets/ajouter/?$ index.php?page=ticket_add [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/modifier/?$ index.php?page=ticket_edit&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/ouvrir/?$ index.php?page=ticket_open&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/fermer/?$ index.php?page=ticket_close&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/supprimer/?$ index.php?page=ticket_delete&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/commentaires/ajouter/?$ index.php?page=ticket_comment_add&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/commentaires/(.*)/modifier/?$ index.php?page=ticket_comment_edit&id=$1&comment_id=$2 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/commentaires/(.*)/supprimer/?$ index.php?page=ticket_comment_delete&id=$1&comment_id=$2 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/$ index.php?page=ticket_show&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)$ index.php?page=ticket_show&id=$1 [NC,QSA,L]
+
+    RewriteRule ^moderation/utilisateurs/?$ index.php?page=moderation_user_index [NC,QSA,L]
+    RewriteRule ^moderation/utilisateurs/(.*)/bloquer/?$ index.php?page=moderation_user_block&id=$1 [NC,QSA,L]
+    RewriteRule ^moderation/utilisateurs/(.*)/$ index.php?page=moderation_user_show&id=$1 [NC,QSA,L]
+    RewriteRule ^moderation/utilisateurs/(.*)$ index.php?page=moderation_user_show&id=$1 [NC,QSA,L]
+</IfModule>
+
+Options All -Indexes -MultiViews
+
+ErrorDocument 401 "/template/errors/_401.php"
+ErrorDocument 403 "/template/errors/_403.php"
+ErrorDocument 404 "/template/errors/_404.php"
+ErrorDocument 500 "/template/errors/_500.php"

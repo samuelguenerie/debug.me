@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  database:
+    container_name: debug.me_database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: debug.me
+    image: mysql
+    ports:
+      - '9906:3306'
+    restart: always
+  phpmyadmin:
+    container_name: debug.me_phpmyadmin
+    depends_on:
+      - database
+    environment:
+      PMA_HOST: database
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8080:80'
+    restart: always
+  web-server:
+    build:
+      context: docker
+    container_name: debug.me_web_server
+    depends_on:
+      - database
+    ports:
+      - '8000:80'
+    volumes:
+      - ./app:/var/www/html
