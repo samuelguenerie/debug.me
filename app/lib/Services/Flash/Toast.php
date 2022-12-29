@@ -21,7 +21,7 @@ readonly class Toast
     )
     {
         if ($type !== self::TYPE_ERROR && $type !== self::TYPE_SUCCESS) {
-            throw new Exception("Toast type $this->type isn\'t from the constants list.");
+            throw new Exception("Toast type $this->type isn't from the constants list.");
         }
 
         $_SESSION['previousPage'] = [

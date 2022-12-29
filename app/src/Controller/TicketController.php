@@ -10,6 +10,7 @@ use App\Manager\TicketManager;
 use App\Manager\UserManager;
 use Exception;
 use Plugo\Controller\AbstractController;
+use Plugo\Services\Upload\Upload;
 
 class TicketController extends AbstractController {
     /**
@@ -68,7 +69,20 @@ class TicketController extends AbstractController {
 
                     $ticket->setTitle($_POST['title']);
                     $ticket->setContent($_POST['content']);
-                    $ticket->setIsOpen(true);
+                    $ticket->setIsOpen(1);
+
+                    if (!empty($_FILES['file']['name'])) {
+                        $upload = new Upload();
+
+                        if ($uploadedFile = $upload->add()) {
+                            $ticket->setImage($uploadedFile);
+                        }
+                    }
+
+                    $userManager = new UserManager();
+                    $user = $userManager->find(1);
+                    $ticket->setUser($user);
+
                     $ticket->setUser($userSession->getId());
 
                     $ticketManager->add($ticket);
@@ -113,7 +127,7 @@ class TicketController extends AbstractController {
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
                     } elseif ($ticket->getUser() !== $userSession) {
-                        throw new Exception("User " . $userSession->getUsername() . " isn\'t the author of ticket with id $id.");
+                        throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     } elseif (!$ticket->getIsOpen()) {
                         throw new Exception("Ticket closed.");
                     }
@@ -121,6 +135,16 @@ class TicketController extends AbstractController {
                     if (!empty($_POST)) {
                         $ticket->setTitle($_POST['title']);
                         $ticket->setContent($_POST['content']);
+
+                        if (!empty($_FILES['file']['name'])) {
+                            $upload = new Upload();
+
+                            if ($upload->remove($ticket->getImage())) {
+                                if ($uploadedFile = $upload->add()) {
+                                    $ticket->setImage($uploadedFile);
+                                }
+                            }
+                        }
 
                         $ticketManager->edit($ticket);
 
@@ -162,7 +186,7 @@ class TicketController extends AbstractController {
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
                     } elseif ($ticket->getUser() !== $userSession) {
-                        throw new Exception("User " . $userSession->getUsername() . " isn\'t the author of ticket with id $id.");
+                        throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     } elseif ($ticket->getIsOpen()) {
                         throw new Exception("Ticket already open.");
                     }
@@ -203,7 +227,7 @@ class TicketController extends AbstractController {
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
                     } elseif ($ticket->getUser() !== $userSession && !$userSession->getIsModerator()) {
-                        throw new Exception("User " . $userSession->getUsername() . " isn\'t the author of ticket with id $id.");
+                        throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     } elseif (!$ticket->getIsOpen()) {
                         throw new Exception("Ticket already close.");
                     }
@@ -244,7 +268,15 @@ class TicketController extends AbstractController {
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
                     } elseif ($ticket->getUser() !== $userSession && !$userSession->getIsModerator()) {
-                        throw new Exception("User " . $userSession->getUsername() . " isn\'t the author of ticket with id $id.");
+                        throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
+                    }
+
+                    if (!empty($ticket->getImage())) {
+                        $upload = new Upload();
+
+                        if (!$upload->remove($ticket->getImage())) {
+                            throw new Exception("File " . $ticket->getImage() . " of ticket ticket with id $id can't be deleted.");
+                        }
                     }
 
                     $ticketManager->remove($ticket);
@@ -348,7 +380,7 @@ class TicketController extends AbstractController {
                         if (!$comment) {
                             throw new Exception("Comment with id $commentId not found.");
                         } elseif ($comment->getUser() !== $userSession) {
-                            throw new Exception("User " . $userSession->getUsername() . " isn\'t the author of comment with id $commentId.");
+                            throw new Exception("User " . $userSession->getUsername() . " isn't the author of comment with id $commentId.");
                         }
 
                         $comment->setContent($_POST['content']);
@@ -401,7 +433,7 @@ class TicketController extends AbstractController {
                     if (!$comment) {
                         throw new Exception("Comment with id $commentId not found.");
                     } elseif ($comment->getUser() !== $userSession && !$userSession->getIsModerator()) {
-                        throw new Exception("User " . $userSession->getUsername() . " isn\'t the author of comment with id $commentId.");
+                        throw new Exception("User " . $userSession->getUsername() . " isn't the author of comment with id $commentId.");
                     }
 
                     $commentManager->remove($comment);

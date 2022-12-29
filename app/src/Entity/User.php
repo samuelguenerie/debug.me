@@ -9,8 +9,8 @@ class User
     private ?string $password;
     private ?string $username;
     private ?int $points;
-    private ?bool $is_moderator;
-    private ?bool $is_blocked;
+    private ?int $is_moderator;
+    private ?int $is_blocked;
     private string $created_at;
     private ?string $updated_at;
 
@@ -107,9 +107,9 @@ class User
     }
 
     /**
-     * @return bool|null
+     * @return int|null
      */
-    public function getIsModerator(): ?bool
+    public function getIsModerator(): ?int
     {
         return $this->is_moderator;
     }
@@ -124,9 +124,9 @@ class User
     }
 
     /**
-     * @return bool|null
+     * @return int|null
      */
-    public function getIsBlocked(): ?bool
+    public function getIsBlocked(): ?int
     {
         return $this->is_blocked;
     }

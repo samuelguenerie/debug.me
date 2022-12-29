@@ -51,12 +51,18 @@ class TicketManager extends AbstractManager {
      */
     public function add(Ticket $ticket): PDOStatement
     {
-        return $this->create(Ticket::class, [
+        $fields = [
             'title' => $ticket->getTitle(),
             'content' => $ticket->getContent(),
             'is_open' => $ticket->getIsOpen(),
             'user_id' => $ticket->getUser()->getId()
-        ]);
+        ];
+
+        if (!empty($ticket->getImage())) {
+            $fields['image'] = $ticket->getImage();
+        }
+
+        return $this->create(Ticket::class, $fields);
     }
 
     /**
@@ -65,13 +71,17 @@ class TicketManager extends AbstractManager {
      */
     public function edit(Ticket $ticket): PDOStatement
     {
-        return $this->update(Ticket::class, $ticket->getId(), [
-                'title' => $ticket->getTitle(),
-                'content' => $ticket->getContent(),
-                'is_open' => $ticket->getIsOpen(),
-                'user_id' => $ticket->getUser()->getId()
-            ]
-        );
+        $fields = [
+            'title' => $ticket->getTitle(),
+            'content' => $ticket->getContent(),
+            'is_open' => $ticket->getIsOpen(),
+            'user_id' => $ticket->getUser()->getId()
+        ];
+
+        if ($ticket->getImage()) {
+            $fields['image'] = $ticket->getImage();
+        }
+        return $this->update(Ticket::class, $ticket->getId(), $fields);
     }
 
     /**

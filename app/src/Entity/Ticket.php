@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Manager\UserManager;
+use Plugo\Services\Upload\Upload;
 
 class Ticket
 {
@@ -10,6 +11,7 @@ class Ticket
     private ?string $title;
     private ?string $content;
     private ?int $is_open;
+    private ?string $image = null;
     private ?int $user_id;
     private ?string $created_at;
     private ?string $updated_at;
@@ -57,9 +59,9 @@ class Ticket
     }
 
     /**
-     * @return bool|null
+     * @return int|null
      */
-    public function getIsOpen(): ?bool
+    public function getIsOpen(): ?int
     {
         return $this->is_open;
     }
@@ -71,6 +73,25 @@ class Ticket
     public function setIsOpen(?bool $is_open): void
     {
         $this->is_open = $is_open;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    /**
+     * @param string|null $image
+     * @return void
+     */
+    public function setImage(?string $image): void
+    {
+        $upload = new Upload();
+
+        $this->image = $upload->getUploadDir() . '/' . $image;
     }
 
     /**

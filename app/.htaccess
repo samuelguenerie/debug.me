@@ -4,14 +4,14 @@
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
 
-    RewriteRule ^accueil$ index.php?page=home [NC,QSA,L]
-    RewriteRule ^mentions-legales$ index.php?page=terms_of_use [NC,QSA,L]
-    RewriteRule ^politique-de-confidentialite$ index.php?page=privacy_policy [NC,QSA,L]
+    RewriteRule ^accueil/?$ index.php?page=home [NC,QSA,L]
+    RewriteRule ^mentions-legales/?$ index.php?page=terms_of_use [NC,QSA,L]
+    RewriteRule ^politique-de-confidentialite/?$ index.php?page=privacy_policy [NC,QSA,L]
 
-    RewriteRule ^inscription$ index.php?page=register [NC,QSA,L]
-    RewriteRule ^connexion$ index.php?page=login [NC,QSA,L]
-    RewriteRule ^deconnexion$ index.php?page=logout [NC,QSA,L]
-    RewriteRule ^compte$ index.php?page=account [NC,QSA,L]
+    RewriteRule ^inscription/?$ index.php?page=register [NC,QSA,L]
+    RewriteRule ^connexion/?$ index.php?page=login [NC,QSA,L]
+    RewriteRule ^deconnexion/?$ index.php?page=logout [NC,QSA,L]
+    RewriteRule ^compte/?$ index.php?page=account [NC,QSA,L]
 
     RewriteRule ^tickets/?$ index.php?page=ticket_index [NC,QSA,L]
     RewriteRule ^tickets/ajouter/?$ index.php?page=ticket_add [NC,QSA,L]

@@ -25,6 +25,16 @@ docker compose up
 docker exec -i debug.me_database mysql -u root -proot debug.me < {path_to_debug_me.sql_file}
 ```
 
+If directory `app/public/uploads` doesn't exist:
+
+```shell
+docker exec -it debug.me_web_server mkdir public/uploads
+```
+
+```shell
+debug.me_web_server chmod 777 public/uploads
+```
+
 ## Project launch
 
 ```shell

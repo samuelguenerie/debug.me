@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use Plugo\Controller\AbstractController;
-use Plugo\Services\Flash\Toast;
 
 class MainController extends AbstractController {
     /**
