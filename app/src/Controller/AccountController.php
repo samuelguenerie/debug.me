@@ -6,8 +6,10 @@ use App\Entity\User;
 use App\Manager\UserManager;
 use Exception;
 use Plugo\Controller\AbstractController;
+use Plugo\Services\Auth\Authenticator;
 
-class AccountController extends AbstractController {
+class AccountController extends AbstractController
+{
     /**
      * @return string|null
      * @throws Exception
@@ -53,9 +55,11 @@ class AccountController extends AbstractController {
             if ($user) {
                 if (!$user->getIsBlocked()) {
                     if (password_verify($_POST['password'], $user->getPassword())) {
-                        // TODO: add cookie / session for the user logged.
+                        $authenticator = new Authenticator();
 
-                        return $this->redirectToRoute('home');
+                        if ($authenticator->login($user, false)) {
+                            return $this->redirectToRoute('home');
+                        }
                     }
 
                     throw new Exception('Invalid password.');

@@ -2,39 +2,83 @@
 
 namespace Plugo\Services\Auth;
 
+use App\Entity\User;
+use App\Manager\UserManager;
+use Exception;
 use Plugo\Manager\AbstractManager;
 
 class Authenticator extends AbstractManager
 {
-    private function register($class, $data)
+    const cookieParent = 'DEBUGME';
+
+    private int $userCookieDuration = 60 * 60 * 24 * 7;
+
+    public function register($class, $data)
     {
     }
 
-    private function login($class, $data)
+    /**
+     * @param User $user
+     * @param bool $loginInSession
+     * @return bool
+     */
+    public function login(User $user, bool $loginInSession = true): bool
     {
-        /*
-        $query = "SELECT * FROM '.$this->classToTable($class).' WHERE email = '" . $data['email'] . "'";
-        $stmt = $this->executeQuery($query, ['id' => $id]);
-        $stmt->setFetchMode(\PDO::FETCH_CLASS, $class);
-        return $stmt->fetch();
+        if ($_SESSION['user'] = $user) {
+            if (!$loginInSession) {
+                setcookie(self::cookieParent . '[user]', $user->getId(), time() + $this->userCookieDuration);
+            }
 
-        verification mot de passe 
-        if($data['password'] === sha($data['password'])){
-
+            return true;
         }
 
-        utlisation possible de readOneBy() pour passer le parametre email et password
-
-        si tout bon yooo jb ;)
-         $_SESSION['logged'] = TRUE;
-
-        */
+        return false;
     }
 
-    private function logout()
+    /**
+     * @return bool
+     */
+    public function logout(): bool
     {
-        $_SESSION['logged'] = FALSE;
+        if (isset($_SESSION['user'])) {
+            unset($_SESSION['user']);
 
-        $_SESSION['id'] = $this->getId();
+            if (isset($_COOKIE[self::cookieParent]['user'])) {
+                setcookie(self::cookieParent . '[user]', '', time() - $this->userCookieDuration);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     * @throws Exception
+     */
+    public function checkLogged(): bool
+    {
+        if (isset($_COOKIE[self::cookieParent]['user']) || isset($_SESSION['user'])) {
+            if (!isset($_SESSION['user'])) {
+                $id = $_COOKIE[self::cookieParent]['user'];
+                $userManagement = new UserManager();
+                $user = $userManagement->find($id);
+
+                if ($user && !$user->getIsBlocked()) {
+                    self::login($user);
+
+                    return true;
+                }
+
+                setcookie(self::cookieParent . '[user]', '', time() - $this->userCookieDuration);
+
+                return false;
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }

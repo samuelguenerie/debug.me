@@ -1,6 +1,6 @@
 <h1>Tickets</h1>
 
-<?php foreach($data['tickets'] as $ticket) { ?>
+<?php foreach ($data['tickets'] as $ticket) { ?>
   <article>
     <h2><?= htmlspecialchars_decode($ticket->getTitle()) ?></h2>
 

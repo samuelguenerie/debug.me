@@ -42,3 +42,5 @@ docker compose up
 ```
 
 The project can be access on http://localhost:8000 and phpmyadmin on http://localhost:8080.
+
+The user passwords are `Test1234`.

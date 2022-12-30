@@ -35,7 +35,7 @@ abstract class AbstractManager {
         $db = $this->connect();
         $stmt = $db->prepare($query);
 
-        foreach($data as $key => $value) {
+        foreach ($data as $key => $value) {
             $stmt->bindValue($key, $value);
         }
 
@@ -181,11 +181,11 @@ abstract class AbstractManager {
         $query = "UPDATE " . $this->classToTable($class) . " SET ";
 
         foreach (array_keys($fields) as $field) {
-          $query .= $field . " = :" . $field;
+            $query .= $field . " = :" . $field;
 
-          if ($field != array_key_last($fields)) {
-              $query .= ', ';
-          }
+            if ($field != array_key_last($fields)) {
+                $query .= ', ';
+            }
         }
 
         $query .= ' WHERE id = :id';
