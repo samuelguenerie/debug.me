@@ -86,10 +86,28 @@ class Comment
     }
 
     /**
+     * @param string|null $created_at
+     * @return void
+     */
+    public function setCreatedAt(?string $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
      * @return string|null
      */
     public function getUpdatedAt(): ?string
     {
         return $this->updated_at;
+    }
+
+    /**
+     * @param string|null $updated_at
+     * @return void
+     */
+    public function setUpdatedAt(?string $updated_at): void
+    {
+        $this->updated_at = $updated_at;
     }
 }
