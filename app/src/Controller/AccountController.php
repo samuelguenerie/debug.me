@@ -16,26 +16,36 @@ class AccountController extends AbstractController
      */
     public function register(): ?string
     {
-        if (!empty($_POST)) {
-            $userManager = new UserManager();
-            $user = new User();
+        if (empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            if (!empty($_POST)) {
+                $userManager = new UserManager();
+                $user = new User();
 
-            if ($_POST['password'] === $_POST['passwordConfirmation']) {
-                $user->setEmail($_POST['email']);
-                $user->setPassword($_POST['password']);
-                $user->setUsername($_POST['username']);
+                if ($_POST['password'] === $_POST['passwordConfirmation']) {
+                    $user->setEmail($_POST['email']);
+                    $user->setPassword($_POST['password']);
+                    $user->setUsername($_POST['username']);
 
-                $userManager->add($user);
+                    if ($userManager->add($user)) {
+                        $authenticator = new Authenticator();
 
-                // TODO: add cookie / session for the user registered and now logged.
+                        $userAdded = $userManager->findOneBy(['email' => $user->getEmail()]);
 
-                return $this->redirectToRoute('home');
+                        $authenticator->login($userAdded, false);
+
+                        return $this->redirectToRoute('home');
+                    }
+
+                    throw new Exception('User ' . $user->getEmail() . ' can\'t be add.');
+                }
+
+                throw new Exception('Password and password confirmation doesn\'t match.');
             }
 
-            throw new Exception('Password and password confirmation doesn\'t match.');
+            return $this->renderView('account/register.php');
         }
 
-        return $this->renderView('account/register.php');
+        return $this->redirectToRoute('home');
     }
 
     /**
@@ -44,34 +54,43 @@ class AccountController extends AbstractController
      */
     public function login(): ?string
     {
-        if (!empty($_POST)) {
-            $email = $_POST['email'];
-            $userManager = new UserManager();
-            /** @var User $user */
-            $user = $userManager->findOneBy([
-                'email' => $_POST['email'],
-            ]);
+        if (empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            if (!empty($_POST)) {
+                $email = $_POST['email'];
+                $userManager = new UserManager();
+                /** @var User $user */
+                $user = $userManager->findOneBy([
+                    'email' => $_POST['email'],
+                ]);
 
-            if ($user) {
-                if (!$user->getIsBlocked()) {
-                    if (password_verify($_POST['password'], $user->getPassword())) {
-                        $authenticator = new Authenticator();
+                if ($user) {
+                    if (!$user->getIsBlocked()) {
+                        if (password_verify($_POST['password'], $user->getPassword())) {
+                            $authenticator = new Authenticator();
+                            $loginInSession = true;
 
-                        if ($authenticator->login($user, false)) {
-                            return $this->redirectToRoute('home');
+                            if (isset($_POST['remember'])) {
+                                $loginInSession = false;
+                            }
+
+                            if ($authenticator->login($user, $loginInSession)) {
+                                return $this->redirectToRoute('home');
+                            }
                         }
+
+                        throw new Exception('Invalid password.');
                     }
 
-                    throw new Exception('Invalid password.');
+                    throw new Exception("User " . $user->getUsername() . " is blocked.");
                 }
 
-                throw new Exception("User " . $user->getUsername() . " is blocked.");
+                throw new Exception("User with email $email not found.");
             }
 
-            throw new Exception("User with email $email not found.");
+            return $this->renderView('account/login.php');
         }
 
-        return $this->renderView('account/login.php');
+        return $this->redirectToRoute('home');
     }
 
     /**
@@ -80,16 +99,17 @@ class AccountController extends AbstractController
      */
     public function logout(): ?string
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            $authenticator = new Authenticator();
 
-        if (!empty($userSession)) {
-            // TODO: implement logout function
+            if ($authenticator->logout()) {
+                return $this->redirectToRoute('home');
+            }
 
-            return $this->redirectToRoute('home');
+            throw new Exception('User can\'t be logout.');
         }
 
-        throw new Exception('User not logged');
+        return $this->redirectToRoute('login');
     }
 
     /**
@@ -98,10 +118,10 @@ class AccountController extends AbstractController
      */
     public function account(): ?string
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_POST)) {
                     $userManager = new UserManager();
@@ -125,6 +145,6 @@ class AccountController extends AbstractController
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");
         }
 
-        throw new Exception('User not logged');
+        return $this->redirectToRoute('login');
     }
 }

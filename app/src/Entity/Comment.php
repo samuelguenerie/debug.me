@@ -11,8 +11,8 @@ class Comment
     private ?string $content;
     private ?int $ticket_id;
     private ?int $user_id;
-    private ?string $created_at;
-    private ?string $updated_at;
+    private ?string $created_at = null;
+    private ?string $updated_at = null;
 
     /**
      * @return int|null

@@ -11,11 +11,11 @@ class User
     private ?string $email;
     private ?string $password;
     private ?string $username;
-    private ?int $points;
-    private ?int $is_moderator;
-    private ?int $is_blocked;
-    private ?string $created_at;
-    private ?string $updated_at;
+    private ?int $points = 0;
+    private ?int $is_moderator = 0;
+    private ?int $is_blocked = 0;
+    private ?string $created_at = null;
+    private ?string $updated_at = null;
 
     /**
      * @return int|null

@@ -51,14 +51,24 @@ class UserManager extends AbstractManager {
      */
     public function add(User $user): PDOStatement
     {
-        return $this->create(User::class, [
+        $fields = [
             'email' => $user->getEmail(),
             'password' => $user->getPassword(),
             'username' => $user->getUsername(),
             'points' => $user->getPoints(),
             'is_moderator' => $user->getIsModerator(),
             'is_blocked' => $user->getIsBlocked()
-        ]);
+        ];
+
+        if (!empty($user->getCreatedAt())) {
+            $fields['created_at'] = $user->getCreatedAt();
+        }
+
+        if (!empty($user->getUpdatedAt())) {
+            $fields['updated_at'] = $user->getUpdatedAt();
+        }
+
+        return $this->create(User::class, $fields);
     }
 
     /**
@@ -67,15 +77,24 @@ class UserManager extends AbstractManager {
      */
     public function edit(User $user): PDOStatement
     {
-        return $this->update(User::class, $user->getId(), [
-                'email' => $user->getEmail(),
-                'password' => $user->getPassword(),
-                'username' => $user->getUsername(),
-                'points' => $user->getPoints(),
-                'is_moderator' => $user->getIsModerator(),
-                'is_blocked' => $user->getIsBlocked()
-            ]
-        );
+        $fields = [
+            'email' => $user->getEmail(),
+            'password' => $user->getPassword(),
+            'username' => $user->getUsername(),
+            'points' => $user->getPoints(),
+            'is_moderator' => $user->getIsModerator(),
+            'is_blocked' => $user->getIsBlocked()
+        ];
+
+        if ($user->getCreatedAt()) {
+            $fields['created_at'] = $user->getCreatedAt();
+        }
+
+        if ($user->getUpdatedAt()) {
+            $fields['updated_at'] = $user->getUpdatedAt();
+        }
+
+        return $this->update(User::class, $user->getId(), $fields);
     }
 
     /**

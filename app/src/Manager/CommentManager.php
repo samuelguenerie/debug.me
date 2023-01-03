@@ -51,11 +51,21 @@ class CommentManager extends AbstractManager {
      */
     public function add(Comment $comment): PDOStatement
     {
-        return $this->create(Comment::class, [
+        $fields = [
             'content' => $comment->getContent(),
             'ticket_id' => $comment->getTicket()->getId(),
             'user_id' => $comment->getUser()->getId()
-        ]);
+        ];
+
+        if (!empty($comment->getCreatedAt())) {
+            $fields['created_at'] = $comment->getCreatedAt();
+        }
+
+        if (!empty($comment->getUpdatedAt())) {
+            $fields['updated_at'] = $comment->getUpdatedAt();
+        }
+
+        return $this->create(Comment::class, $fields);
     }
 
     /**
@@ -64,12 +74,21 @@ class CommentManager extends AbstractManager {
      */
     public function edit(Comment $comment): PDOStatement
     {
-        return $this->update(Comment::class, $comment->getId(), [
-                'content' => $comment->getContent(),
-                'ticket_id' => $comment->getTicket()->getId(),
-                'user_id' => $comment->getUser()->getId()
-            ]
-        );
+        $fields = [
+            'content' => $comment->getContent(),
+            'ticket_id' => $comment->getTicket()->getId(),
+            'user_id' => $comment->getUser()->getId()
+        ];
+
+        if ($comment->getCreatedAt()) {
+            $fields['created_at'] = $comment->getCreatedAt();
+        }
+
+        if ($comment->getUpdatedAt()) {
+            $fields['updated_at'] = $comment->getUpdatedAt();
+        }
+
+        return $this->update(Comment::class, $comment->getId(), $fields);
     }
 
     /**

@@ -11,11 +11,11 @@ class Ticket
     private ?int $id;
     private ?string $title;
     private ?string $content;
-    private ?int $is_open;
+    private ?int $is_open = 1;
     private ?string $image = null;
     private ?int $user_id;
-    private ?string $created_at;
-    private ?string $updated_at;
+    private ?string $created_at = null;
+    private ?string $updated_at = null;
 
     /**
      * @return int|null

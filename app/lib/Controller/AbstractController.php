@@ -2,9 +2,29 @@
 
  namespace Plugo\Controller;
 
+ use Exception;
  use JetBrains\PhpStorm\NoReturn;
+ use Plugo\Services\Auth\Authenticator;
 
  abstract class AbstractController {
+     /**
+      * @throws Exception
+      */
+     public function __construct()
+     {
+         if (isset($_COOKIE[appName][Authenticator::AUTHENTICATOR_USER])) {
+             try {
+                 $authenticator = new Authenticator();
+
+                 $authenticator->checkLogged();
+
+                 unset($authenticator);
+             } catch (Exception $e) {
+                 throw new Exception($e);
+             }
+         }
+     }
+
      /**
       * @param string $template
       * @param array $data
@@ -35,7 +55,7 @@
 
             $uri .= '&' . implode('&', $strData);
         }
-    
+
         header("Location: " . $uri);
 
         die;

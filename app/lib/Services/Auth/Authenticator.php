@@ -9,13 +9,8 @@ use Plugo\Manager\AbstractManager;
 
 class Authenticator extends AbstractManager
 {
-    const cookieParent = 'DEBUGME';
-
+    public const AUTHENTICATOR_USER = 'user';
     private int $userCookieDuration = 60 * 60 * 24 * 7;
-
-    public function register($class, $data)
-    {
-    }
 
     /**
      * @param User $user
@@ -24,9 +19,9 @@ class Authenticator extends AbstractManager
      */
     public function login(User $user, bool $loginInSession = true): bool
     {
-        if ($_SESSION['user'] = $user) {
+        if ($_SESSION[self::AUTHENTICATOR_USER] = $user) {
             if (!$loginInSession) {
-                setcookie(self::cookieParent . '[user]', $user->getId(), time() + $this->userCookieDuration);
+                setcookie(appName . '[' . self::AUTHENTICATOR_USER . ']', $user->getId(), time() + $this->userCookieDuration);
             }
 
             return true;
@@ -40,11 +35,11 @@ class Authenticator extends AbstractManager
      */
     public function logout(): bool
     {
-        if (isset($_SESSION['user'])) {
-            unset($_SESSION['user']);
+        if (isset($_SESSION[self::AUTHENTICATOR_USER])) {
+            unset($_SESSION[self::AUTHENTICATOR_USER]);
 
-            if (isset($_COOKIE[self::cookieParent]['user'])) {
-                setcookie(self::cookieParent . '[user]', '', time() - $this->userCookieDuration);
+            if (isset($_COOKIE[appName][self::AUTHENTICATOR_USER])) {
+                setcookie(appName . '[' . self::AUTHENTICATOR_USER . ']', '', time() - $this->userCookieDuration);
             }
 
             return true;
@@ -59,9 +54,9 @@ class Authenticator extends AbstractManager
      */
     public function checkLogged(): bool
     {
-        if (isset($_COOKIE[self::cookieParent]['user']) || isset($_SESSION['user'])) {
-            if (!isset($_SESSION['user'])) {
-                $id = $_COOKIE[self::cookieParent]['user'];
+        if (isset($_COOKIE[appName][self::AUTHENTICATOR_USER]) || isset($_SESSION[self::AUTHENTICATOR_USER])) {
+            if (!isset($_SESSION[self::AUTHENTICATOR_USER])) {
+                $id = $_COOKIE[appName][self::AUTHENTICATOR_USER];
                 $userManagement = new UserManager();
                 $user = $userManagement->find($id);
 
@@ -71,7 +66,7 @@ class Authenticator extends AbstractManager
                     return true;
                 }
 
-                setcookie(self::cookieParent . '[user]', '', time() - $this->userCookieDuration);
+                setcookie(appName . '[' . self::AUTHENTICATOR_USER . ']', '', time() - $this->userCookieDuration);
 
                 return false;
             }

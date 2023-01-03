@@ -62,6 +62,14 @@ class TicketManager extends AbstractManager {
             $fields['image'] = $ticket->getImage();
         }
 
+        if (!empty($ticket->getCreatedAt())) {
+            $fields['created_at'] = $ticket->getCreatedAt();
+        }
+
+        if (!empty($ticket->getUpdatedAt())) {
+            $fields['updated_at'] = $ticket->getUpdatedAt();
+        }
+
         return $this->create(Ticket::class, $fields);
     }
 
@@ -81,6 +89,15 @@ class TicketManager extends AbstractManager {
         if ($ticket->getImage()) {
             $fields['image'] = $ticket->getImage();
         }
+
+        if ($ticket->getCreatedAt()) {
+            $fields['created_at'] = $ticket->getCreatedAt();
+        }
+
+        if ($ticket->getUpdatedAt()) {
+            $fields['updated_at'] = $ticket->getUpdatedAt();
+        }
+
         return $this->update(Ticket::class, $ticket->getId(), $fields);
     }
 

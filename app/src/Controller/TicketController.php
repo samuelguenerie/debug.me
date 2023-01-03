@@ -10,6 +10,7 @@ use App\Manager\TicketManager;
 use App\Manager\UserManager;
 use Exception;
 use Plugo\Controller\AbstractController;
+use Plugo\Services\Auth\Authenticator;
 use Plugo\Services\Upload\Upload;
 
 class TicketController extends AbstractController {
@@ -58,10 +59,10 @@ class TicketController extends AbstractController {
      */
     public function add(): ?string
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_POST)) {
                     $ticketManager = new TicketManager();
@@ -69,7 +70,6 @@ class TicketController extends AbstractController {
 
                     $ticket->setTitle($_POST['title']);
                     $ticket->setContent($_POST['content']);
-                    $ticket->setIsOpen(1);
 
                     if (!empty($_FILES['file']['name'])) {
                         $upload = new Upload();
@@ -107,10 +107,10 @@ class TicketController extends AbstractController {
      */
     public function edit(): ?string
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id'])) {
                     $id = $_GET['id'];
@@ -120,7 +120,7 @@ class TicketController extends AbstractController {
 
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
-                    } elseif ($ticket->getUser() !== $userSession) {
+                    } elseif ($ticket->getUser()->getId() !== $userSession->getId()) {
                         throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     } elseif (!$ticket->getIsOpen()) {
                         throw new Exception("Ticket closed.");
@@ -166,10 +166,10 @@ class TicketController extends AbstractController {
      */
     public function open(): ?string
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id'])) {
                     $id = $_GET['id'];
@@ -179,7 +179,7 @@ class TicketController extends AbstractController {
 
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
-                    } elseif ($ticket->getUser() !== $userSession) {
+                    } elseif ($ticket->getUser()->getId() !== $userSession->getId()) {
                         throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     } elseif ($ticket->getIsOpen()) {
                         throw new Exception("Ticket already open.");
@@ -207,10 +207,10 @@ class TicketController extends AbstractController {
      */
     public function close(): ?string
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id'])) {
                     $id = $_GET['id'];
@@ -220,7 +220,7 @@ class TicketController extends AbstractController {
 
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
-                    } elseif ($ticket->getUser() !== $userSession && !$userSession->getIsModerator()) {
+                    } elseif ($ticket->getUser()->getId() !== $userSession->getId() && !$userSession->getIsModerator()) {
                         throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     } elseif (!$ticket->getIsOpen()) {
                         throw new Exception("Ticket already close.");
@@ -248,10 +248,10 @@ class TicketController extends AbstractController {
      */
     public function delete(): null
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id'])) {
                     $id = $_GET['id'];
@@ -261,7 +261,7 @@ class TicketController extends AbstractController {
 
                     if (!$ticket) {
                         throw new Exception("Ticket with id $id not found.");
-                    } elseif ($ticket->getUser() !== $userSession && !$userSession->getIsModerator()) {
+                    } elseif ($ticket->getUser()->getId() !== $userSession->getId() && !$userSession->getIsModerator()) {
                         throw new Exception("User " . $userSession->getUsername() . " isn't the author of ticket with id $id.");
                     }
 
@@ -293,10 +293,10 @@ class TicketController extends AbstractController {
      */
     public function commentAdd(): null
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id'])) {
                     $ticketId = $_GET['id'];
@@ -349,10 +349,10 @@ class TicketController extends AbstractController {
      */
     public function commentEdit(): null
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id']) && !empty($_GET['comment_id'])) {
                     $ticketId = $_GET['id'];
@@ -402,10 +402,10 @@ class TicketController extends AbstractController {
      */
     public function commentDelete(): null
     {
-        /** @var User $userSession */
-        $userSession = null; // TODO: get user object from session / cookie.
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
-        if (!empty($userSession)) {
             if (!$userSession->getIsBlocked()) {
                 if (!empty($_GET['id']) && !empty($_GET['comment_id'])) {
                     $ticketId = $_GET['id'];
