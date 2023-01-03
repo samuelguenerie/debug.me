@@ -137,10 +137,6 @@ abstract class AbstractManager {
      */
     protected function create(string $class, array $fields): PDOStatement
     {
-        foreach ($fields as $key => $field) {
-            $fields[$key] = htmlspecialchars($field);
-        }
-
         $query = "INSERT INTO " . $this->classToTable($class) . " (";
 
         foreach (array_keys($fields) as $field) {
@@ -174,10 +170,6 @@ abstract class AbstractManager {
      */
     protected function update(string $class, int $id, array $fields): PDOStatement
     {
-        foreach ($fields as $key => $field) {
-            $fields[$key] = htmlspecialchars($field);
-        }
-
         $query = "UPDATE " . $this->classToTable($class) . " SET ";
 
         foreach (array_keys($fields) as $field) {

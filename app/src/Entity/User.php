@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Manager\CommentManager;
+use App\Manager\TicketManager;
+
 class User
 {
     private ?int $id;
@@ -172,5 +175,25 @@ class User
     public function setUpdatedAt(?string $updated_at): void
     {
         $this->updated_at = $updated_at;
+    }
+
+    /**
+     * @return false|array
+     */
+    public function getTickets(): false|array
+    {
+        $ticketManager = new TicketManager();
+
+        return $ticketManager->findBy(['user_id' => $this->id], ['created_at' => 'DESC']);
+    }
+
+    /**
+     * @return false|array
+     */
+    public function getComments(): false|array
+    {
+        $commentManager = new CommentManager();
+
+        return $commentManager->findBy(['user_id' => $this->id], ['created_at' => 'DESC']);
     }
 }

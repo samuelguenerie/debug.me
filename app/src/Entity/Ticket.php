@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Manager\CommentManager;
 use App\Manager\UserManager;
 use Plugo\Services\Upload\Upload;
 
@@ -145,5 +146,15 @@ class Ticket
     public function setUpdatedAt(?string $updated_at): void
     {
         $this->updated_at = $updated_at;
+    }
+
+    /**
+     * @return false|array
+     */
+    public function getComments(): false|array
+    {
+        $commentManager = new CommentManager();
+
+        return $commentManager->findBy(['ticket_id' => $this->id], ['created_at' => 'DESC']);
     }
 }
