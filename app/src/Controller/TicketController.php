@@ -80,19 +80,13 @@ class TicketController extends AbstractController {
                     }
 
                     $userManager = new UserManager();
-                    $user = $userManager->find(1);
-                    $ticket->setUser($user);
-
-                    $ticket->setUser($userSession->getId());
-
-                    $ticketManager->add($ticket);
-
-                    $userManager = new UserManager();
                     /** @var User $user */
                     $user = $userManager->find($userSession->getId());
 
-                    $user->incrementPoint();
+                    $ticket->setUser($user);
+                    $ticketManager->add($ticket);
 
+                    $user->incrementPoint();
                     $userManager->edit($user);
 
                     return $this->redirectToRoute('ticket_index');

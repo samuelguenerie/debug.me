@@ -113,7 +113,7 @@ class Upload
         $hasFile = isset($_FILES['file']);
 
         if (!$isPostRequest || !$hasFile) {
-            throw new Exception('Invalid file upload operation.');
+            throw new Exception($this->messages['UPLOAD_ERR_NO_FILE']);
         }
 
         $status = $_FILES['file']['error'];
@@ -126,13 +126,13 @@ class Upload
         $filesize = filesize($tmp);
 
         if ($filesize > $this->maxSize) {
-            throw new Exception('File size is ' . $this->formatFilesize($filesize) . ' , which is bigger than allowed size ' . $this->formatFilesize($this->maxSize) . '.');
+            throw new Exception($this->messages['UPLOAD_ERR_INI_SIZE']);
         }
 
         $mimeType = $this->getMimeType($tmp);
 
         if (!in_array($mimeType, array_keys($this->allowedFiles))) {
-            throw new Exception('The file type is not allowed to upload.');
+            throw new Exception($this->messages['UPLOAD_ERR_EXTENSION']);
         }
 
         $uploadedFile = str_replace('/tmp/php', '', $tmp) . '.' . $this->allowedFiles[$mimeType];
@@ -143,7 +143,7 @@ class Upload
             return $uploadedFile;
         }
 
-        throw new Exception('Error moving the file to the upload folder.');
+        throw new Exception($this->messages['UPLOAD_ERR_CANT_WRITE']);
     }
 
     /**

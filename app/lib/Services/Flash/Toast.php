@@ -28,6 +28,7 @@ readonly class Toast
             'requestUri' => basename($_SERVER['REQUEST_URI']),
             'dateTime' => new DateTime()
         ];
+
         $_SESSION['toast'] = $this;
     }
 

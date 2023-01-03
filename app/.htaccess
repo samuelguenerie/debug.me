@@ -1,10 +1,11 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
 
+    RewriteRule ^$ index.php?page=home [NC,QSA,L]
+
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
 
-    RewriteRule ^accueil/?$ index.php?page=home [NC,QSA,L]
     RewriteRule ^mentions-legales/?$ index.php?page=terms_of_use [NC,QSA,L]
     RewriteRule ^politique-de-confidentialite/?$ index.php?page=privacy_policy [NC,QSA,L]
 

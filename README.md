@@ -25,6 +25,8 @@ docker compose up
 docker exec -i debug.me_database mysql -u root -proot debug.me < {path_to_debug_me.sql_file}
 ```
 
+If the above command isn't working, you can use the phpmyadmin interface.
+
 If directory `app/public/uploads` doesn't exist:
 
 ```shell
@@ -43,4 +45,4 @@ docker compose up
 
 The project can be access on http://localhost:8000 and phpmyadmin on http://localhost:8080.
 
-The user passwords are `Test1234`.
+The webapp user passwords are `Test1234` and phpmyadmin user `root` and password `root`.
