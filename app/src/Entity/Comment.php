@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Manager\CommentManager;
 use App\Manager\TicketManager;
 use App\Manager\UserManager;
 
@@ -11,6 +12,7 @@ class Comment
     private ?string $content;
     private ?int $ticket_id;
     private ?int $user_id;
+    private ?int $comment_id = null;
     private ?string $created_at = null;
     private ?string $updated_at = null;
 
@@ -75,6 +77,25 @@ class Comment
     public function setUser(?User $user): void
     {
         $this->user_id = $user->getId();
+    }
+
+    /**
+     * @return Comment|null
+     */
+    public function getComment(): ?Comment
+    {
+        $commentManager = new CommentManager();
+
+        return $commentManager->find($this->comment_id);
+    }
+
+    /**
+     * @param Comment|null $comment
+     * @return void
+     */
+    public function setComment(?Comment $comment): void
+    {
+        $this->comment_id = $comment->getId();
     }
 
     /**
