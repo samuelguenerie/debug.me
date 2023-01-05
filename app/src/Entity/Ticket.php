@@ -155,6 +155,6 @@ class Ticket
     {
         $commentManager = new CommentManager();
 
-        return $commentManager->findBy(['ticket_id' => $this->id], ['created_at' => 'DESC']);
+        return $commentManager->findBy(['ticket_id' => $this->id], ['score' => 'DESC', 'created_at' => 'DESC']);
     }
 }

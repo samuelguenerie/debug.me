@@ -10,6 +10,7 @@ class Comment
 {
     private ?int $id;
     private ?string $content;
+    private ?int $score = 0;
     private ?int $ticket_id;
     private ?int $user_id;
     private ?int $comment_id = null;
@@ -39,6 +40,39 @@ class Comment
     public function setContent(?string $content): void
     {
         $this->content = nl2br($content);
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getScore(): ?int
+    {
+        return $this->score;
+    }
+
+    /**
+     * @param int|null $score
+     * @return void
+     */
+    public function setScore(?int $score): void
+    {
+        $this->score = $score;
+    }
+
+    /**
+     * @return void
+     */
+    public function incrementScore(): void
+    {
+        $this->score++;
+    }
+
+    /**
+     * @return void
+     */
+    public function decrementScore(): void
+    {
+        $this->score--;
     }
 
     /**

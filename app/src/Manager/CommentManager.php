@@ -57,6 +57,10 @@ class CommentManager extends AbstractManager {
             'user_id' => $comment->getUser()->getId()
         ];
 
+        if (!empty($comment->getScore())) {
+            $fields['score'] = $comment->getScore();
+        }
+
         if (!empty($comment->getComment())) {
             $fields['comment_id'] = $comment->getComment();
         }
@@ -83,6 +87,10 @@ class CommentManager extends AbstractManager {
             'ticket_id' => $comment->getTicket()->getId(),
             'user_id' => $comment->getUser()->getId()
         ];
+
+        if ($comment->getScore()) {
+            $fields['score'] = $comment->getScore();
+        }
 
         if ($comment->getComment()) {
             $fields['comment_id'] = $comment->getComment();
