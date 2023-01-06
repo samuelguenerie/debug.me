@@ -2,6 +2,8 @@
 
 namespace Plugo\Manager;
 
+use DateTime;
+use DateTimeInterface;
 use PDO;
 use PDOStatement;
 
@@ -32,6 +34,12 @@ abstract class AbstractManager {
      */
     private function executeQuery(string $query, array $data = []): PDOStatement
     {
+        foreach ($data as $key => $value) {
+            if ($value instanceof DateTime) {
+                $data[$key] = $value->format(DateTimeInterface::W3C);
+            }
+        }
+
         $db = $this->connect();
         $stmt = $db->prepare($query);
 

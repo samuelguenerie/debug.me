@@ -6,6 +6,9 @@ use App\Manager\CommentManager;
 use App\Manager\CommentScoreManager;
 use App\Manager\TicketManager;
 use App\Manager\UserManager;
+use DateTime;
+use DateTimeInterface;
+use Exception;
 
 class Comment
 {
@@ -98,37 +101,39 @@ class Comment
     }
 
     /**
-     * @return string|null
+     * @return DateTime|null
+     * @throws Exception
      */
-    public function getCreatedAt(): ?string
+    public function getCreatedAt(): ?DateTime
     {
-        return $this->created_at;
+        return $this->created_at ? new DateTime($this->created_at) : null;
     }
 
     /**
-     * @param string|null $created_at
+     * @param DateTime|null $created_at
      * @return void
      */
-    public function setCreatedAt(?string $created_at): void
+    public function setCreatedAt(?DateTime $created_at): void
     {
-        $this->created_at = $created_at;
+        $this->created_at = $created_at->format(DateTimeInterface::W3C);
     }
 
     /**
-     * @return string|null
+     * @return DateTime|null
+     * @throws Exception
      */
-    public function getUpdatedAt(): ?string
+    public function getUpdatedAt(): ?DateTime
     {
-        return $this->updated_at;
+        return $this->updated_at ? new DateTime($this->updated_at) : null;
     }
 
     /**
-     * @param string|null $updated_at
+     * @param DateTime|null $updated_at
      * @return void
      */
-    public function setUpdatedAt(?string $updated_at): void
+    public function setUpdatedAt(?DateTime $updated_at): void
     {
-        $this->updated_at = $updated_at;
+        $this->updated_at = $updated_at->format(DateTimeInterface::W3C);
     }
 
     /**

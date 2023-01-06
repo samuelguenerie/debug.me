@@ -1,21 +1,9 @@
-<?php
-use App\Entity\User;
-use Plugo\Services\Auth\Authenticator;
-?>
-
 <main class="container">
     <header>
         <h1><?= $data['ticket']->getTitle() ?></h1>
     </header>
 
-    <?php
-    if (isset($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
-        /** @var User $userSession */
-        $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
-    }
-    ?>
-
-    <?php if (!empty($userSession) && $userSession->getId() === $data['ticket']->getUser()->getId()): ?>
+    <?php if (!empty($sessionUser) && $sessionUser->getId() === $data['ticket']->getUser()->getId()): ?>
         <a href="?page=ticket_edit&id=<?= $data['ticket']->getId() ?>" class="btn btn-primary" role="button">Éditer mon ticket</a>
         <a href="#" id="close" class="btn btn-danger" role="button">Fermer mon ticket</a>
 
@@ -30,7 +18,7 @@ use Plugo\Services\Auth\Authenticator;
                 }
             });
         </script>
-    <?php elseif ($userSession->getIsModerator()): ?>
+    <?php elseif (!empty($sessionUser) && $sessionUser->getIsModerator()): ?>
         <a href="#" id="closeModerator" class="btn btn-danger" role="button">Fermer le ticket</a>
 
         <script>
@@ -50,7 +38,7 @@ use Plugo\Services\Auth\Authenticator;
 
     <img src="<?= $data['ticket']->getImage() ?>">
 
-    <p>Posté le <?= date('d F Y', strtotime($data['ticket']->getCreatedAt())) ?> à <?= date('H:i', strtotime($data['ticket']->getCreatedAt())) ?> par <?= $data['ticket']->getUser()->getUsername() ?> | <?= $data['ticket']->getUser()->getPoints() ?> point<?php if ($data['ticket']->getUser()->getPoints() > 1): ?>s<?php endif; ?></p>
+    <p>Posté le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?> par <?= $data['ticket']->getUser()->getUsername() ?> | <?= $data['ticket']->getUser()->getPoints() ?> point<?php if ($data['ticket']->getUser()->getPoints() > 1): ?>s<?php endif; ?></p>
 
     <hr>
 
@@ -65,12 +53,12 @@ use Plugo\Services\Auth\Authenticator;
 
                         <footer class="d-flex justify-content-between text-secondary">
                             <div>
-                                Posté par <?= $comment->getUser()->getUsername() ?> le <?= date('d F Y', strtotime($comment->getCreatedAt())) ?> à <?= date('H:i', strtotime($comment->getCreatedAt())) ?>.
+                                Posté par <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?>
                             </div>
                             <div>
                                 <a
                                     href="?page=ticket_comment_score_increment&id=<?= $comment->getId() ?>"
-                                    <?php if (!empty($comment->getScoreFromUser($userSession)) && $comment->getScoreFromUser($userSession)->getScore() > 0): ?>
+                                    <?php if (!empty($sessionUser) && !empty($comment->getScoreFromUser($sessionUser)) && $comment->getScoreFromUser($sessionUser)->getScore() > 0): ?>
                                         class="btn btn-primary disabled"
                                         aria-disabled="true"
                                     <?php else: ?>
@@ -85,7 +73,7 @@ use Plugo\Services\Auth\Authenticator;
 
                                 <a
                                     href="?page=ticket_comment_score_decrement&id=<?= $comment->getId() ?>"
-                                    <?php if (!empty($comment->getScoreFromUser($userSession)) && $comment->getScoreFromUser($userSession)->getScore() <= 0): ?>
+                                    <?php if (!empty($sessionUser) && !empty($comment->getScoreFromUser($sessionUser)) && $comment->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
                                         class="btn btn-danger disabled"
                                         aria-disabled="true"
                                     <?php else: ?>
@@ -107,7 +95,7 @@ use Plugo\Services\Auth\Authenticator;
         <div class="col-12 col-md-4">
             <h3>Répondre au ticket</h3>
 
-            <?php if (!empty($userSession)): ?>
+            <?php if (!empty($sessionUser)): ?>
                 <form action="?page=ticket_comment_add&id=<?= $data['ticket']->getId() ?>" method="post">
                     <div class="mb-3">
                         <label for="content" class="form-label">Message</label>

@@ -19,7 +19,7 @@
             </ul>
 
             <ul class="navbar-nav">
-                <?php if (!isset($_SESSION[\Plugo\Services\Auth\Authenticator::AUTHENTICATOR_USER])): ?>
+                <?php if (!isset($sessionUser)): ?>
                     <li class="nav-item">
                         <a href="?page=register" class="nav-link">Inscription</a>
                     </li>

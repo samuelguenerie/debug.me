@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\Ticket;
+use DateTimeInterface;
+use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
 
@@ -48,6 +50,7 @@ class TicketManager extends AbstractManager {
     /**
      * @param Ticket $ticket
      * @return PDOStatement
+     * @throws Exception
      */
     public function add(Ticket $ticket): PDOStatement
     {
@@ -76,6 +79,7 @@ class TicketManager extends AbstractManager {
     /**
      * @param Ticket $ticket
      * @return PDOStatement
+     * @throws Exception
      */
     public function edit(Ticket $ticket): PDOStatement
     {

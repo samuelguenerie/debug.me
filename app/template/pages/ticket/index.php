@@ -23,7 +23,7 @@
                     <?= count($ticket->getComments()) ?> réponses
                 </div>
                 <div>
-                    Dernière réponse le <?= date('d F Y', strtotime($ticket->getCreatedAt())) ?>
+                    Dernière réponse le <?= $serviceDate->convertDateInFrench($ticket->getCreatedAt()) ?>
                 </div>
             </footer>
         </article>

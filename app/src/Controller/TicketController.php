@@ -86,12 +86,18 @@ class TicketController extends AbstractController {
                     $user = $userManager->find($userSession->getId());
 
                     $ticket->setUser($user);
-                    $ticketManager->add($ticket);
 
-                    $user->incrementPoint();
-                    $userManager->edit($user);
+                    if ($ticketManager->add($ticket)) {
+                        $user->incrementPoint();
 
-                    return $this->redirectToRoute('ticket_index');
+                        if ($userManager->edit($user)) {
+                            return $this->redirectToRoute('ticket_index');
+                        }
+
+                        throw new Exception('An error occurred with the user edit.');
+                    }
+
+                    throw new Exception('An error occurred with the ticket add.');
                 }
 
                 return $this->renderView('ticket/add.php');

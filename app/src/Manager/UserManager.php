@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\User;
+use DateTimeInterface;
+use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
 
@@ -48,6 +50,7 @@ class UserManager extends AbstractManager {
     /**
      * @param User $user
      * @return PDOStatement
+     * @throws Exception
      */
     public function add(User $user): PDOStatement
     {
@@ -74,6 +77,7 @@ class UserManager extends AbstractManager {
     /**
      * @param User $user
      * @return PDOStatement
+     * @throws Exception
      */
     public function edit(User $user): PDOStatement
     {

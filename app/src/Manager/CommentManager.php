@@ -3,6 +3,8 @@
 namespace App\Manager;
 
 use App\Entity\Comment;
+use DateTimeInterface;
+use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
 
@@ -48,6 +50,7 @@ class CommentManager extends AbstractManager {
     /**
      * @param Comment $comment
      * @return PDOStatement
+     * @throws Exception
      */
     public function add(Comment $comment): PDOStatement
     {
@@ -75,6 +78,7 @@ class CommentManager extends AbstractManager {
     /**
      * @param Comment $comment
      * @return PDOStatement
+     * @throws Exception
      */
     public function edit(Comment $comment): PDOStatement
     {
