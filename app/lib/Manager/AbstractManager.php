@@ -68,7 +68,7 @@ abstract class AbstractManager {
             $query .= $filter . " = :" . $filter;
 
             if ($filter != array_key_last($filters)) {
-                $query .= 'AND ';
+                $query .= ' AND ';
             }
         }
 
@@ -98,7 +98,7 @@ abstract class AbstractManager {
                 $query .= $filter . " = :" . $filter;
 
                 if ($filter != array_key_last($filters)) {
-                    $query .= 'AND ';
+                    $query .= ' AND ';
                 }
             }
         }

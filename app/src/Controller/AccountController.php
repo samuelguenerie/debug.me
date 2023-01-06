@@ -123,23 +123,31 @@ class AccountController extends AbstractController
             $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
             if (!$userSession->getIsBlocked()) {
-                if (!empty($_POST)) {
-                    $userManager = new UserManager();
-                    /** @var User $user */
-                    $user = $userManager->findOneBy([
-                        'email' => $userSession->getEmail(),
-                    ]);
+                $userManager = new UserManager();
+                /** @var User $user */
+                $user = $userManager->findOneBy([
+                    'email' => $userSession->getEmail(),
+                ]);
 
-                    $user->setEmail($_POST['email']);
-                    $user->setPassword($_POST['password']);
-                    $user->setUsername($_POST['username']);
+                if (!empty($_POST)) {
+                    if (!empty($_POST['email'])) {
+                        $user->setEmail($_POST['email']);
+                    }
+
+                    if (!empty($_POST['password'])) {
+                        $user->setPassword($_POST['password']);
+                    }
+
+                    if (!empty($_POST['username'])) {
+                        $user->setUsername($_POST['username']);
+                    }
 
                     $userManager->edit($user);
 
                     return $this->redirectToRoute('account');
                 }
 
-                return $this->renderView('account/account.php');
+                return $this->renderView('account/account.php', ['user' => $user]);
             }
 
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");

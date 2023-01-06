@@ -69,6 +69,14 @@ const ROUTES = [
         'controller' => App\Controller\TicketController::class,
         'method' => 'commentDelete'
     ],
+    'ticket_comment_score_increment' => [
+        'controller' => App\Controller\TicketController::class,
+        'method' => 'commentScoreIncrement'
+    ],
+    'ticket_comment_score_decrement' => [
+        'controller' => App\Controller\TicketController::class,
+        'method' => 'commentScoreDecrement'
+    ],
     'moderation_user_index' => [
         'controller' => App\Controller\ModerationController::class,
         'method' => 'userIndex'

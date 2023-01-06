@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Comment;
+use App\Entity\CommentScore;
 use App\Entity\Ticket;
 use App\Entity\User;
 use App\Manager\CommentManager;
+use App\Manager\CommentScoreManager;
 use App\Manager\TicketManager;
 use App\Manager\UserManager;
 use Exception;
@@ -22,7 +24,7 @@ class TicketController extends AbstractController {
         $ticketManager = new TicketManager();
 
         return $this->renderView('ticket/index.php', [
-            'tickets' => $ticketManager->findBy([], ['created_at' => 'DESC'])
+            'tickets' => $ticketManager->findBy(['is_open' => 1], ['created_at' => 'DESC'])
         ]);
     }
 
@@ -315,14 +317,15 @@ class TicketController extends AbstractController {
                         $comment = new Comment();
 
                         $comment->setContent($_POST['content']);
-                        $comment->setUser($userSession->getId());
-                        $comment->setTicket($ticket);
-
-                        $commentManager->add($comment);
 
                         $userManager = new UserManager();
                         /** @var User $user */
                         $user = $userManager->find($userSession->getId());
+
+                        $comment->setUser($user);
+                        $comment->setTicket($ticket);
+
+                        $commentManager->add($comment);
 
                         $user->incrementPoint();
 
@@ -431,6 +434,126 @@ class TicketController extends AbstractController {
                     }
 
                     $commentManager->remove($comment);
+
+                    return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                }
+
+                throw new Exception('Parameter id and comment_id required in url.');
+            }
+
+            throw new Exception("User " . $userSession->getUsername() . " is blocked.");
+        }
+
+        throw new Exception('User not logged');
+    }
+
+    /**
+     * @return null
+     * @throws Exception
+     */
+    public function commentScoreIncrement(): null
+    {
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
+
+            if (!$userSession->getIsBlocked()) {
+                if (!empty($_GET['id'])) {
+                    $commentId = $_GET['id'];
+                    $commentManager = new CommentManager();
+                    /** @var Comment $comment */
+                    $comment = $commentManager->find($commentId);
+
+                    if (!$comment) {
+                        throw new Exception("Comment with id $commentId not found.");
+                    }
+
+                    $ticketId = $comment->getTicket()->getId();
+                    $ticketManager = new TicketManager();
+                    /** @var Ticket $ticket */
+                    $ticket = $ticketManager->find($ticketId);
+
+                    if (!$ticket) {
+                        throw new Exception("Ticket with id $ticketId not found.");
+                    } elseif (!$ticket->getIsOpen()) {
+                        throw new Exception("Ticket closed.");
+                    }
+
+                    $commentScoreManager = new CommentScoreManager();
+                    /** @var CommentScore $commentScore */
+                    $commentScore = $commentScoreManager->findOneBy(['comment_id' => $commentId, 'user_id' => $userSession->getId()]);
+
+                    if (empty($commentScore)) {
+                        $commentScore = new CommentScore();
+
+                        $commentScore->setComment($comment);
+                        $commentScore->setUser($userSession);
+                        $commentScore->setScore(1);
+                        $commentScoreManager->add($commentScore);
+                    } elseif ($commentScore->getScore() <= 0) {
+                        $commentScore->setScore(1);
+                        $commentScoreManager->edit($commentScore);
+                    }
+
+                    return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                }
+
+                throw new Exception('Parameter id and comment_id required in url.');
+            }
+
+            throw new Exception("User " . $userSession->getUsername() . " is blocked.");
+        }
+
+        throw new Exception('User not logged');
+    }
+
+    /**
+     * @return null
+     * @throws Exception
+     */
+    public function commentScoreDecrement(): null
+    {
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
+
+            if (!$userSession->getIsBlocked()) {
+                if (!empty($_GET['id'])) {
+                    $commentId = $_GET['id'];
+                    $commentManager = new CommentManager();
+                    /** @var Comment $comment */
+                    $comment = $commentManager->find($commentId);
+
+                    if (!$comment) {
+                        throw new Exception("Comment with id $commentId not found.");
+                    }
+
+                    $ticketId = $comment->getTicket()->getId();
+                    $ticketManager = new TicketManager();
+                    /** @var Ticket $ticket */
+                    $ticket = $ticketManager->find($ticketId);
+
+                    if (!$ticket) {
+                        throw new Exception("Ticket with id $ticketId not found.");
+                    } elseif (!$ticket->getIsOpen()) {
+                        throw new Exception("Ticket closed.");
+                    }
+
+                    $commentScoreManager = new CommentScoreManager();
+                    /** @var CommentScore $commentScore */
+                    $commentScore = $commentScoreManager->findOneBy(['comment_id' => $commentId, 'user_id' => $userSession->getId()]);
+
+                    if (empty($commentScore)) {
+                        $commentScore = new CommentScore();
+
+                        $commentScore->setComment($comment);
+                        $commentScore->setUser($userSession);
+                        $commentScore->setScore(0);
+                        $commentScoreManager->add($commentScore);
+                    } elseif ($commentScore->getScore() >= 0) {
+                        $commentScore->setScore(0);
+                        $commentScoreManager->edit($commentScore);
+                    }
 
                     return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
                 }

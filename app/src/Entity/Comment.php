@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Manager\CommentManager;
+use App\Manager\CommentScoreManager;
 use App\Manager\TicketManager;
 use App\Manager\UserManager;
 
@@ -10,7 +11,6 @@ class Comment
 {
     private ?int $id;
     private ?string $content;
-    private ?int $score = 0;
     private ?int $ticket_id;
     private ?int $user_id;
     private ?int $comment_id = null;
@@ -40,39 +40,6 @@ class Comment
     public function setContent(?string $content): void
     {
         $this->content = nl2br($content);
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getScore(): ?int
-    {
-        return $this->score;
-    }
-
-    /**
-     * @param int|null $score
-     * @return void
-     */
-    public function setScore(?int $score): void
-    {
-        $this->score = $score;
-    }
-
-    /**
-     * @return void
-     */
-    public function incrementScore(): void
-    {
-        $this->score++;
-    }
-
-    /**
-     * @return void
-     */
-    public function decrementScore(): void
-    {
-        $this->score--;
     }
 
     /**
@@ -118,9 +85,7 @@ class Comment
      */
     public function getComment(): ?Comment
     {
-        $commentManager = new CommentManager();
-
-        return $commentManager->find($this->comment_id);
+        return !empty($this->comment_id) ? (new CommentManager())->find($this->comment_id) : null;
     }
 
     /**
@@ -164,5 +129,44 @@ class Comment
     public function setUpdatedAt(?string $updated_at): void
     {
         $this->updated_at = $updated_at;
+    }
+
+    /**
+     * @return int
+     */
+    public function getScore(): int
+    {
+        $commentScoreManager = new CommentScoreManager();
+
+        $comments = $commentScoreManager->findBy(['comment_id' => $this->id]);
+
+        $score = 0;
+
+        foreach ($comments as $comment) {
+            $score += $comment->getScore();
+        }
+
+        return $score;
+    }
+
+    /**
+     * @return false|array
+     */
+    public function getScores(): false|array
+    {
+        $commentScoreManager = new CommentScoreManager();
+
+        return $commentScoreManager->findBy(['comment_id' => $this->id]);
+    }
+
+    /**
+     * @param User $user
+     * @return mixed
+     */
+    public function getScoreFromUser(User $user): mixed
+    {
+        $commentScoreManager = new CommentScoreManager();
+
+        return $commentScoreManager->findOneBy(['comment_id' => $this->id, 'user_id' => $user->getId()]);
     }
 }

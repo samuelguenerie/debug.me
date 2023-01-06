@@ -1,17 +1,17 @@
 <form action="" method="post" enctype="multipart/form-data">
-    <div class="form-item">
-        <label for="title">Titre</label>
-        <input type="text" name="title" id="title" required <?php if (isset($data['ticket'])) { echo 'value="' . $data['ticket']->getTitle() .'"'; } ?>>
+    <div class="mb-3">
+        <label for="title" class="form-label">Titre</label>
+        <input type="text" name="title" id="title" required <?php if (isset($data['ticket'])) { echo 'value="' . $data['ticket']->getTitle() .'"'; } ?> class="form-control">
     </div>
 
-    <div class="form-item">
-        <label for="content">Contenu</label>
-        <textarea name="content" id="content" rows="5"><?php if (isset($data['ticket'])) { echo $data['ticket']->getContent(); } ?></textarea>
+    <div class="mb-3">
+        <label for="content" class="form-label">Contenu</label>
+        <textarea name="content" id="content" rows="5" class="form-control"><?php if (isset($data['ticket'])) { echo $data['ticket']->getContent(); } ?></textarea>
     </div>
 
-    <div class="form-item">
-        <label for="content">Image (une seule)</label>
-        <input type="file" name="file" id="file">
+    <div class="mb-3">
+        <label for="content" class="form-label">Image (une seule)</label>
+        <input type="file" name="file" id="file" class="form-control">
     </div>
 
     <?php if (isset($data['ticket']) && !empty($data['ticket']->getImage())): ?>
@@ -19,7 +19,8 @@
         <img src="<?= $data['ticket']->getImage() ?>">
     <?php endif; ?>
 
-    <div class="form-item">
-        <input type="submit" <?php if (!isset($data['ticket'])) { echo 'value="Ajouter"'; } else { echo 'value="Éditer"'; } ?>>
+    <div class="d-flex">
+        <input type="submit" <?php if (!isset($data['ticket'])) { echo 'value="Ajouter"'; } else { echo 'value="Éditer"'; } ?> class="btn btn-primary" role="button">
+        <a href="?page=ticket_index" class="btn btn-secondary" role="button">Annuler</a>
     </div>
 </form>

@@ -1,3 +1,7 @@
-<h1>Ajouter un ticket</h1>
+<main class="container">
+    <header>
+        <h1>Ajouter un ticket</h1>
+    </header>
 
-<?php include '_form.php' ?>
+    <?php include '_form.php' ?>
+</main>
