@@ -147,8 +147,8 @@ abstract class AbstractManager {
         $security = new Security();
         $mapper = new Mapper();
 
-        foreach ($result as $itemKey => $item) {
-            $result[$itemKey] = $mapper->arrayToObject($security->secureXssVulnerabilities($item), $class);
+        foreach ($result as $key => $item) {
+            $result[$key] = $mapper->arrayToObject($security->secureXssVulnerabilities($item), $class);
         }
 
         return $result;
