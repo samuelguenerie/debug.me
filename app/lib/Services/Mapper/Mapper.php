@@ -2,20 +2,29 @@
 
 namespace Plugo\Services\Mapper;
 
+use ReflectionClass;
+use ReflectionException;
+
 class Mapper
 {
     /**
      * @param array $array
      * @param string $class
-     * @return mixed
+     * @return object
+     * @throws ReflectionException
      */
-    public function arrayToObject(array $array, string $class): mixed
+    public function arrayToObject(array $array, string $class): object
     {
-        return unserialize(sprintf(
-            'O:%d:"%s"%s',
-            strlen($class),
-            $class,
-            strstr(serialize($array), ':')
-        ));
+        $object = new $class();
+        $reflection = new ReflectionClass($object);
+
+        foreach ($array as $key => $value) {
+            if ($reflection->hasProperty($key)) {
+                $property = $reflection->getProperty($key);
+                $property->setValue($object, $value);
+            }
+        }
+
+        return $object;
     }
 }

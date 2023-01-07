@@ -5,21 +5,25 @@ namespace Plugo\Services\Security;
 class Security
 {
     /**
-     * @param array|string $mixed
+     * @param array|string $input
      * @return array|string
      */
-    public function secureXssVulnerabilities(array|string $mixed): array|string
+    public function secureXssVulnerabilities(array|string $input): array|string
     {
-        if (is_string($mixed)) {
-            return htmlspecialchars($mixed);
-        }
+        if (is_array($input)) {
+            $output = [];
 
-        foreach ($mixed as $key => $value) {
-            if (is_string($value)) {
-                $mixed[$key] = htmlspecialchars($value);
+            foreach ($input as $key => $value) {
+                if (is_string($value)) {
+                    $output[$key] = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+                } else {
+                    $output[$key] = $value;
+                }
             }
-        }
 
-        return $mixed;
+            return $output;
+        } else {
+            return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
+        }
     }
 }
