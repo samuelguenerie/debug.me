@@ -65,8 +65,8 @@ class CommentManager extends AbstractManager {
             'user_id' => $comment->getUser()->getId()
         ];
 
-        if (!empty($comment->getComment())) {
-            $fields['comment_id'] = $comment->getComment();
+        if (!empty($comment->getParent())) {
+            $fields['comment_id'] = $comment->getParent();
         }
 
         if (!empty($comment->getCreatedAt())) {
@@ -93,8 +93,8 @@ class CommentManager extends AbstractManager {
             'user_id' => $comment->getUser()->getId()
         ];
 
-        if ($comment->getComment()) {
-            $fields['comment_id'] = $comment->getComment();
+        if ($comment->getParent()) {
+            $fields['comment_id'] = $comment->getParent();
         }
 
         if ($comment->getCreatedAt()) {

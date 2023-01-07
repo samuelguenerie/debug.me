@@ -47,7 +47,9 @@ abstract class AbstractManager {
         $stmt = $db->prepare($query);
 
         foreach ($data as $key => $value) {
-            $stmt->bindValue($key, $value);
+            if (!is_null($value)) {
+                $stmt->bindValue($key, $value);
+            }
         }
 
         $stmt->execute();
@@ -74,21 +76,19 @@ abstract class AbstractManager {
      */
     protected function readOne(string $class, array $filters): mixed
     {
-        $query = 'SELECT * FROM ' . $this->classToTable($class) . ' WHERE ';
+        $query = 'SELECT * FROM ' . $this->classToTable($class);
 
-        foreach (array_keys($filters) as $filter) {
-            $query .= $filter . " = :" . $filter;
-
-            if ($filter != array_key_last($filters)) {
-                $query .= ' AND ';
-            }
-        }
+        $this->buildWhereClause($query, $filters);
 
         $stmt = $this->executeQuery($query, $filters);
 
         $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
         $result = $stmt->fetch();
+
+        if (!$result) {
+            return $result;
+        }
 
         $security = new Security();
         $mapper = new Mapper();
@@ -109,37 +109,9 @@ abstract class AbstractManager {
     {
         $query = 'SELECT * FROM ' . $this->classToTable($class);
 
-        if (!empty($filters)) {
-            $query .= ' WHERE ';
-
-            foreach (array_keys($filters) as $filter) {
-                $query .= $filter . " = :" . $filter;
-
-                if ($filter != array_key_last($filters)) {
-                    $query .= ' AND ';
-                }
-            }
-        }
-
-        if (!empty($order)) {
-            $query .= ' ORDER BY ';
-
-            foreach ($order as $key => $val) {
-                $query .= $key . ' ' . $val;
-
-                if ($key != array_key_last($order)) {
-                    $query .= ', ';
-                }
-            }
-        }
-
-        if (isset($limit)) {
-            $query .= ' LIMIT ' . $limit;
-
-            if (isset($offset)) {
-                $query .= ' OFFSET ' . $offset;
-            }
-        }
+        $this->buildWhereClause($query, $filters);
+        $this->buildOrderClause($query, $order);
+        $this->buildLimitClause($query, $limit, $offset);
 
         $stmt = $this->executeQuery($query, $filters);
 
@@ -155,6 +127,67 @@ abstract class AbstractManager {
         }
 
         return $result;
+    }
+
+    /**
+     * @param string $query
+     * @param array $filters
+     * @return void
+     */
+    private function buildWhereClause(string &$query, array $filters = []): void
+    {
+        if (!empty($filters)) {
+            $query .= ' WHERE ';
+
+            foreach ($filters as $key => $filter) {
+                if (is_null($filter)) {
+                    $query .= $key . " IS NULL";
+                } else {
+                    $query .= $key . " = :" . $key;
+                }
+
+                if ($key != array_key_last($filters)) {
+                    $query .= ' AND ';
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $query
+     * @param array $order
+     * @return void
+     */
+    private function buildOrderClause(string &$query, array $order = []): void
+    {
+        if (!empty($order)) {
+            $query .= ' ORDER BY ';
+
+            foreach ($order as $key => $val) {
+                $query .= $key . ' ' . $val;
+
+                if ($key != array_key_last($order)) {
+                    $query .= ', ';
+                }
+            }
+        }
+    }
+
+    /**
+     * @param string $query
+     * @param int|null $limit
+     * @param int|null $offset
+     * @return void
+     */
+    private function buildLimitClause(string &$query, int $limit = null, int $offset = null): void
+    {
+        if (isset($limit)) {
+            $query .= ' LIMIT ' . $limit;
+
+            if (isset($offset)) {
+                $query .= ' OFFSET ' . $offset;
+            }
+        }
     }
 
     /**

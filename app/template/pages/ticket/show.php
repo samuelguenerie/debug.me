@@ -85,6 +85,49 @@
                                 </a>
                             </div>
                         </footer>
+
+                        <?php if (count($comment->getChild()) > 0): ?>
+                            <?php foreach ($comment->getChild() as $child): ?>
+                                <article class="ps-5">
+                                    <?= $child->getContent() ?>
+
+                                    <footer class="d-flex justify-content-between text-secondary">
+                                        <div>
+                                            Posté par <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?>
+                                        </div>
+                                        <div>
+                                            <a
+                                                    href="?page=ticket_comment_score_increment&id=<?= $child->getId() ?>"
+                                                <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() > 0): ?>
+                                                    class="btn btn-primary disabled"
+                                                    aria-disabled="true"
+                                                <?php else: ?>
+                                                    class="btn btn-primary"
+                                                <?php endif; ?>
+                                                    role="button"
+                                            >
+                                                +
+                                            </a>
+
+                                            <?= $child->getScore() ?>
+
+                                            <a
+                                                    href="?page=ticket_comment_score_decrement&id=<?= $child->getId() ?>"
+                                                <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
+                                                    class="btn btn-danger disabled"
+                                                    aria-disabled="true"
+                                                <?php else: ?>
+                                                    class="btn btn-danger"
+                                                <?php endif; ?>
+                                                    role="button"
+                                            >
+                                                -
+                                            </a>
+                                        </div>
+                                    </footer>
+                                </article>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                     </article>
                 <?php endforeach; ?>
             <?php else: ?>

@@ -8,6 +8,7 @@ use DateTime;
 use DateTimeInterface;
 use Exception;
 use Plugo\Services\Upload\Upload;
+use ReflectionException;
 
 class Ticket
 {
@@ -155,11 +156,12 @@ class Ticket
 
     /**
      * @return false|array
+     * @throws ReflectionException
      */
     public function getComments(): false|array
     {
         $commentManager = new CommentManager();
 
-        return $commentManager->findBy(['ticket_id' => $this->id], ['created_at' => 'DESC']);
+        return $commentManager->findBy(['ticket_id' => $this->id, 'comment_id' => null], ['created_at' => 'DESC']);
     }
 }

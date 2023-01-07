@@ -9,6 +9,7 @@ use App\Manager\UserManager;
 use DateTime;
 use DateTimeInterface;
 use Exception;
+use ReflectionException;
 
 class Comment
 {
@@ -85,8 +86,9 @@ class Comment
 
     /**
      * @return Comment|null
+     * @throws ReflectionException
      */
-    public function getComment(): ?Comment
+    public function getParent(): ?Comment
     {
         return !empty($this->comment_id) ? (new CommentManager())->find($this->comment_id) : null;
     }
@@ -138,6 +140,7 @@ class Comment
 
     /**
      * @return int
+     * @throws ReflectionException
      */
     public function getScore(): int
     {
@@ -156,6 +159,7 @@ class Comment
 
     /**
      * @return false|array
+     * @throws ReflectionException
      */
     public function getScores(): false|array
     {
@@ -167,11 +171,23 @@ class Comment
     /**
      * @param User $user
      * @return mixed
+     * @throws ReflectionException
      */
     public function getScoreFromUser(User $user): mixed
     {
         $commentScoreManager = new CommentScoreManager();
 
         return $commentScoreManager->findOneBy(['comment_id' => $this->id, 'user_id' => $user->getId()]);
+    }
+
+    /**
+     * @return false|array
+     * @throws ReflectionException
+     */
+    public function getChild(): false|array
+    {
+        $commentManager = new CommentManager();
+
+        return $commentManager->findBy(['comment_id' => $this->id], ['created_at' => 'ASC']);
     }
 }
