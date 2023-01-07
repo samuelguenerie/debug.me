@@ -8,6 +8,7 @@ use PDO;
 use PDOStatement;
 use Plugo\Services\Mapper\Mapper;
 use Plugo\Services\Security\Security;
+use ReflectionException;
 
 require dirname(__DIR__, 2) . '/config/database.php';
 
@@ -69,6 +70,7 @@ abstract class AbstractManager {
      * @param string $class
      * @param array $filters
      * @return mixed
+     * @throws ReflectionException
      */
     protected function readOne(string $class, array $filters): mixed
     {
@@ -101,6 +103,7 @@ abstract class AbstractManager {
      * @param int|null $limit
      * @param int|null $offset
      * @return array|false
+     * @throws ReflectionException
      */
     protected function readMany(string $class, array $filters = [], array $order = [], int $limit = null, int $offset = null): array|false
     {

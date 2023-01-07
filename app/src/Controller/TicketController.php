@@ -14,10 +14,12 @@ use Exception;
 use Plugo\Controller\AbstractController;
 use Plugo\Services\Auth\Authenticator;
 use Plugo\Services\Upload\Upload;
+use ReflectionException;
 
 class TicketController extends AbstractController {
     /**
      * @return string
+     * @throws ReflectionException
      */
     public function index(): string
     {

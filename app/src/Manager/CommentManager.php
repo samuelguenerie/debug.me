@@ -7,11 +7,13 @@ use DateTimeInterface;
 use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
+use ReflectionException;
 
 class CommentManager extends AbstractManager {
     /**
      * @param int $id
      * @return mixed
+     * @throws ReflectionException
      */
     public function find(int $id): mixed
     {
@@ -21,6 +23,7 @@ class CommentManager extends AbstractManager {
     /**
      * @param array $filters
      * @return mixed
+     * @throws ReflectionException
      */
     public function findOneBy(array $filters): mixed
     {
@@ -29,6 +32,7 @@ class CommentManager extends AbstractManager {
 
     /**
      * @return false|array
+     * @throws ReflectionException
      */
     public function findAll(): false|array
     {
@@ -41,6 +45,7 @@ class CommentManager extends AbstractManager {
      * @param int|null $limit
      * @param int|null $offset
      * @return array|false
+     * @throws ReflectionException
      */
     public function findBy(array $filters, array $order = [], int $limit = null, int $offset = null): false|array
     {

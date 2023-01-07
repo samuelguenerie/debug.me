@@ -5,11 +5,13 @@ namespace App\Manager;
 use App\Entity\Tag;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
+use ReflectionException;
 
 class TagManager extends AbstractManager {
     /**
      * @param int $id
      * @return mixed
+     * @throws ReflectionException
      */
     public function find(int $id): mixed
     {
@@ -19,6 +21,7 @@ class TagManager extends AbstractManager {
     /**
      * @param array $filters
      * @return mixed
+     * @throws ReflectionException
      */
     public function findOneBy(array $filters): mixed
     {
@@ -27,6 +30,7 @@ class TagManager extends AbstractManager {
 
     /**
      * @return false|array
+     * @throws ReflectionException
      */
     public function findAll(): false|array
     {
@@ -39,6 +43,7 @@ class TagManager extends AbstractManager {
      * @param int|null $limit
      * @param int|null $offset
      * @return array|false
+     * @throws ReflectionException
      */
     public function findBy(array $filters, array $order = [], int $limit = null, int $offset = null): false|array
     {
