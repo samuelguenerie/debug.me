@@ -6,6 +6,8 @@ use DateTime;
 use DateTimeInterface;
 use PDO;
 use PDOStatement;
+use Plugo\Services\Mapper\Mapper;
+use Plugo\Services\Security\Security;
 
 require dirname(__DIR__, 2) . '/config/database.php';
 
@@ -82,9 +84,14 @@ abstract class AbstractManager {
 
         $stmt = $this->executeQuery($query, $filters);
 
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        return $stmt->fetch();
+        $result = $stmt->fetch();
+
+        $security = new Security();
+        $mapper = new Mapper();
+
+        return $mapper->arrayToObject($security->secureXssVulnerabilities($result), $class);
     }
 
     /**
@@ -133,9 +140,18 @@ abstract class AbstractManager {
 
         $stmt = $this->executeQuery($query, $filters);
 
-        $stmt->setFetchMode(PDO::FETCH_CLASS, $class);
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
 
-        return $stmt->fetchAll();
+        $result = $stmt->fetchAll();
+
+        $security = new Security();
+        $mapper = new Mapper();
+
+        foreach ($result as $itemKey => $item) {
+            $result[$itemKey] = $mapper->arrayToObject($security->secureXssVulnerabilities($item), $class);
+        }
+
+        return $result;
     }
 
     /**
