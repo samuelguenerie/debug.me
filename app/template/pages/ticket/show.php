@@ -53,7 +53,7 @@
 
                         <footer class="d-flex justify-content-between text-secondary">
                             <div>
-                                Posté par <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?>
+                                Posté par <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?> par <?= $comment->getUser()->getUsername() ?>
                             </div>
                             <div>
                                 <a
@@ -93,7 +93,7 @@
 
                                     <footer class="d-flex justify-content-between text-secondary">
                                         <div>
-                                            Posté par <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?>
+                                            Posté par <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?> par <?= $child->getUser()->getUsername() ?>
                                         </div>
                                         <div>
                                             <a
