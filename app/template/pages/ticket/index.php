@@ -8,12 +8,12 @@
         <h1>Liste des tickets</h1>
     </header>
 
-    <a href="?page=ticket_add" class="btn btn-primary" role="button">Ajouter un ticket</a>
+    <a href="index.php?page=ticket_add" class="btn btn-primary" role="button">Ajouter un ticket</a>
 
     <?php foreach ($data['tickets'] as $ticket) { ?>
         <article>
             <header>
-                <a href="?page=ticket_show&id=<?= $ticket->getId() ?>">
+                <a href="index.php?page=ticket_show&id=<?= $ticket->getId() ?>">
                     <h2><?= $ticket->getTitle() ?></h2>
                 </a>
             </header>

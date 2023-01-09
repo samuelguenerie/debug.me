@@ -11,5 +11,5 @@
         <li class="fs-4">Recevez une réponse.</li>
     </ol>
 
-    <a href="?page=ticket_add" class="btn btn-primary" role="button">Poser une question</a>
+    <a href="index.php?page=ticket_add" class="btn btn-primary" role="button">Poser une question</a>
 </main>

@@ -21,6 +21,6 @@
 
     <div class="d-flex">
         <input type="submit" <?php if (!isset($data['ticket'])) { echo 'value="Ajouter"'; } else { echo 'value="Éditer"'; } ?> class="btn btn-primary" role="button">
-        <a href="?page=ticket_index" class="btn btn-secondary" role="button">Annuler</a>
+        <a href="index.php?page=ticket_index" class="btn btn-secondary" role="button">Annuler</a>
     </div>
 </form>

@@ -4,7 +4,7 @@
     </header>
 
     <?php if (!empty($sessionUser) && $sessionUser->getId() === $data['ticket']->getUser()->getId()): ?>
-        <a href="?page=ticket_edit&id=<?= $data['ticket']->getId() ?>" class="btn btn-primary" role="button">Éditer mon ticket</a>
+        <a href="index.php?page=ticket_edit&id=<?= $data['ticket']->getId() ?>" class="btn btn-primary" role="button">Éditer mon ticket</a>
         <a href="#" id="close" class="btn btn-danger" role="button">Fermer mon ticket</a>
 
         <script>
@@ -14,7 +14,7 @@
                 e.preventDefault();
 
                 if (confirm("Souhaitez-vous vraiment fermer ce ticket ?")) {
-                    location.href='?page=ticket_close&id=' + <?= $data['ticket']->getId() ?>;
+                    location.href='index.php?page=ticket_close&id=' + <?= $data['ticket']->getId() ?>;
                 }
             });
         </script>
@@ -28,7 +28,7 @@
                 e.preventDefault();
 
                 if (confirm("Souhaitez-vous vraiment fermer ce ticket ?")) {
-                    location.href='?page=ticket_close&id=' + <?= $data['ticket']->getId() ?>;
+                    location.href='index.php?page=ticket_close&id=' + <?= $data['ticket']->getId() ?>;
                 }
             });
         </script>
@@ -60,7 +60,7 @@
 
                             <div class="col-12 col-sm-2">
                                 <a
-                                        href="?page=ticket_comment_score_increment&id=<?= $comment->getId() ?>"
+                                        href="index.php?page=ticket_comment_score_increment&id=<?= $comment->getId() ?>"
                                     <?php if (!empty($sessionUser) && !empty($comment->getScoreFromUser($sessionUser)) && $comment->getScoreFromUser($sessionUser)->getScore() > 0): ?>
                                         class="btn btn-primary disabled"
                                         aria-disabled="true"
@@ -75,7 +75,7 @@
                                 <?= $comment->getScore() ?>
 
                                 <a
-                                        href="?page=ticket_comment_score_decrement&id=<?= $comment->getId() ?>"
+                                        href="index.php?page=ticket_comment_score_decrement&id=<?= $comment->getId() ?>"
                                     <?php if (!empty($sessionUser) && !empty($comment->getScoreFromUser($sessionUser)) && $comment->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
                                         class="btn btn-danger disabled"
                                         aria-disabled="true"
@@ -104,7 +104,7 @@
 
                                         <div class="col-12 col-sm-2">
                                             <a
-                                                    href="?page=ticket_comment_score_increment&id=<?= $child->getId() ?>"
+                                                    href="index.php?page=ticket_comment_score_increment&id=<?= $child->getId() ?>"
                                                 <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() > 0): ?>
                                                     class="btn btn-primary disabled"
                                                     aria-disabled="true"
@@ -119,7 +119,7 @@
                                             <?= $child->getScore() ?>
 
                                             <a
-                                                    href="?page=ticket_comment_score_decrement&id=<?= $child->getId() ?>"
+                                                    href="index.php?page=ticket_comment_score_decrement&id=<?= $child->getId() ?>"
                                                 <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
                                                     class="btn btn-danger disabled"
                                                     aria-disabled="true"
@@ -146,7 +146,7 @@
             <h3>Répondre au ticket</h3>
 
             <?php if (!empty($sessionUser)): ?>
-                <form action="?page=ticket_comment_add&id=<?= $data['ticket']->getId() ?>" method="post">
+                <form action="index.php?page=ticket_comment_add&id=<?= $data['ticket']->getId() ?>" method="post">
                     <div class="mb-3">
                         <label for="content" class="form-label">Message</label>
                         <textarea rows="10" placeholder="Saisir votre message" name="content" id="content" required class="form-control"></textarea>
@@ -155,7 +155,7 @@
                     <input type="submit" value="Répondre" class="btn btn-primary" role="button">
                 </form>
             <?php else: ?>
-                <a href="?page=login" class="btn btn-primary" role="button">Connectez-vous pour commenter</a>
+                <a href="index.php?page=login" class="btn btn-primary" role="button">Connectez-vous pour commenter</a>
             <?php endif; ?>
         </div>
     </div>
