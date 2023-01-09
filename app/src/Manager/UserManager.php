@@ -3,7 +3,6 @@
 namespace App\Manager;
 
 use App\Entity\User;
-use DateTimeInterface;
 use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;

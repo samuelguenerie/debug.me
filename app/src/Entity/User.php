@@ -7,17 +7,53 @@ use App\Manager\TicketManager;
 use DateTime;
 use DateTimeInterface;
 use Exception;
+use ReflectionException;
 
 class User
 {
+    /**
+     * @var int|null
+     */
     private ?int $id;
+
+    /**
+     * @var string|null
+     */
     private ?string $email;
+
+    /**
+     * @var string|null
+     */
     private ?string $password;
+
+    /**
+     * @var string|null
+     */
     private ?string $username;
+
+    /**
+     * @var int|null
+     */
     private ?int $points = 0;
+
+    /**
+     * @var int|null
+     */
     private ?int $is_moderator = 0;
+
+    /**
+     * @var int|null
+     */
     private ?int $is_blocked = 0;
+
+    /**
+     * @var string|null
+     */
     private ?string $created_at = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $updated_at = null;
 
     /**
@@ -184,6 +220,7 @@ class User
 
     /**
      * @return false|array
+     * @throws ReflectionException
      */
     public function getTickets(): false|array
     {
@@ -194,6 +231,7 @@ class User
 
     /**
      * @return false|array
+     * @throws ReflectionException
      */
     public function getComments(): false|array
     {

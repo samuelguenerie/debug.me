@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\Tag;
+use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
 use ReflectionException;
@@ -53,24 +54,45 @@ class TagManager extends AbstractManager {
     /**
      * @param Tag $tag
      * @return PDOStatement
+     * @throws Exception
      */
     public function add(Tag $tag): PDOStatement
     {
-        return $this->create(Tag::class, [
+        $fields = [
             'title' => $tag->getTitle()
-        ]);
+        ];
+
+        if (!empty($tag->getCreatedAt())) {
+            $fields['created_at'] = $tag->getCreatedAt();
+        }
+
+        if (!empty($tag->getUpdatedAt())) {
+            $fields['updated_at'] = $tag->getUpdatedAt();
+        }
+
+        return $this->create(Tag::class, $fields);
     }
 
     /**
      * @param Tag $tag
      * @return PDOStatement
+     * @throws Exception
      */
     public function edit(Tag $tag): PDOStatement
     {
-        return $this->update(Tag::class, $tag->getId(), [
-                'title' => $tag->getTitle()
-            ]
-        );
+        $fields = [
+            'title' => $tag->getTitle()
+        ];
+
+        if ($tag->getCreatedAt()) {
+            $fields['created_at'] = $tag->getCreatedAt();
+        }
+
+        if ($tag->getUpdatedAt()) {
+            $fields['updated_at'] = $tag->getUpdatedAt();
+        }
+
+        return $this->update(Tag::class, $tag->getId(), $fields);
     }
 
     /**

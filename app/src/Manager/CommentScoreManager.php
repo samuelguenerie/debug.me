@@ -3,6 +3,7 @@
 namespace App\Manager;
 
 use App\Entity\CommentScore;
+use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
 use ReflectionException;
@@ -53,6 +54,7 @@ class CommentScoreManager extends AbstractManager {
     /**
      * @param CommentScore $commentScore
      * @return PDOStatement
+     * @throws Exception
      */
     public function add(CommentScore $commentScore): PDOStatement
     {
@@ -62,12 +64,21 @@ class CommentScoreManager extends AbstractManager {
             'score' => $commentScore->getScore()
         ];
 
+        if (!empty($commentScore->getCreatedAt())) {
+            $fields['created_at'] = $commentScore->getCreatedAt();
+        }
+
+        if (!empty($commentScore->getUpdatedAt())) {
+            $fields['updated_at'] = $commentScore->getUpdatedAt();
+        }
+
         return $this->create(CommentScore::class, $fields);
     }
 
     /**
      * @param CommentScore $commentScore
      * @return PDOStatement
+     * @throws Exception
      */
     public function edit(CommentScore $commentScore): PDOStatement
     {
@@ -76,6 +87,14 @@ class CommentScoreManager extends AbstractManager {
             'user_id' => $commentScore->getUser()->getId(),
             'score' => $commentScore->getScore()
         ];
+
+        if ($commentScore->getCreatedAt()) {
+            $fields['created_at'] = $commentScore->getCreatedAt();
+        }
+
+        if ($commentScore->getUpdatedAt()) {
+            $fields['updated_at'] = $commentScore->getUpdatedAt();
+        }
 
         return $this->update(CommentScore::class, $commentScore->getId(), $fields);
     }

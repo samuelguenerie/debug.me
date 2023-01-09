@@ -13,12 +13,39 @@ use ReflectionException;
 
 class Comment
 {
+    /**
+     * @var int|null
+     */
     private ?int $id;
+
+    /**
+     * @var string|null
+     */
     private ?string $content;
+
+    /**
+     * @var int|null
+     */
     private ?int $ticket_id;
+
+    /**
+     * @var int|null
+     */
     private ?int $user_id;
+
+    /**
+     * @var int|null
+     */
     private ?int $comment_id = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $created_at = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $updated_at = null;
 
     /**
@@ -48,6 +75,7 @@ class Comment
 
     /**
      * @return Ticket|null
+     * @throws ReflectionException
      */
     public function getTicket(): ?Ticket
     {
@@ -67,6 +95,7 @@ class Comment
 
     /**
      * @return User|null
+     * @throws ReflectionException
      */
     public function getUser(): ?User
     {

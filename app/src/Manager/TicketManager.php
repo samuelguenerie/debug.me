@@ -3,7 +3,6 @@
 namespace App\Manager;
 
 use App\Entity\Ticket;
-use DateTimeInterface;
 use Exception;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;

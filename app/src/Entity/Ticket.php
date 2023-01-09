@@ -12,13 +12,44 @@ use ReflectionException;
 
 class Ticket
 {
+    /**
+     * @var int|null
+     */
     private ?int $id;
+
+    /**
+     * @var string|null
+     */
     private ?string $title;
+
+    /**
+     * @var string|null
+     */
     private ?string $content;
+
+    /**
+     * @var int|null
+     */
     private ?int $is_open = 1;
+
+    /**
+     * @var string|null
+     */
     private ?string $image = null;
+
+    /**
+     * @var int|null
+     */
     private ?int $user_id;
+
+    /**
+     * @var string|null
+     */
     private ?string $created_at = null;
+
+    /**
+     * @var string|null
+     */
     private ?string $updated_at = null;
 
     /**
@@ -101,6 +132,7 @@ class Ticket
 
     /**
      * @return User|null
+     * @throws ReflectionException
      */
     public function getUser(): ?User
     {
