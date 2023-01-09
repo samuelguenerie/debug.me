@@ -35,7 +35,7 @@ abstract class AbstractManager {
      * @param array $data
      * @return PDOStatement
      */
-    private function executeQuery(string $query, array $data = []): PDOStatement
+    protected function executeQuery(string $query, array $data = []): PDOStatement
     {
         foreach ($data as $key => $value) {
             if ($value instanceof DateTime) {
@@ -61,7 +61,7 @@ abstract class AbstractManager {
      * @param string $class
      * @return string
      */
-    private function classToTable(string $class): string
+    protected function classToTable(string $class): string
     {
         $tmp = explode('\\', $class);
 
@@ -134,7 +134,7 @@ abstract class AbstractManager {
      * @param array $filters
      * @return void
      */
-    private function buildWhereClause(string &$query, array $filters = []): void
+    protected function buildWhereClause(string &$query, array $filters = []): void
     {
         if (!empty($filters)) {
             $query .= ' WHERE ';
@@ -158,7 +158,7 @@ abstract class AbstractManager {
      * @param array $order
      * @return void
      */
-    private function buildOrderClause(string &$query, array $order = []): void
+    protected function buildOrderClause(string &$query, array $order = []): void
     {
         if (!empty($order)) {
             $query .= ' ORDER BY ';
@@ -179,7 +179,7 @@ abstract class AbstractManager {
      * @param int|null $offset
      * @return void
      */
-    private function buildLimitClause(string &$query, int $limit = null, int $offset = null): void
+    protected function buildLimitClause(string &$query, int $limit = null, int $offset = null): void
     {
         if (isset($limit)) {
             $query .= ' LIMIT ' . $limit;
