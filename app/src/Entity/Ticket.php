@@ -196,4 +196,17 @@ class Ticket
 
         return $commentManager->findBy(['ticket_id' => $this->id, 'comment_id' => null], ['created_at' => 'DESC']);
     }
+
+    /**
+     * @return Comment|null
+     * @throws ReflectionException
+     */
+    public function getLastReply(): ?Comment
+    {
+        $commentManager = new CommentManager();
+
+        $comments = $commentManager->findBy(['ticket_id' => $this->id, 'comment_id' => null], ['created_at' => 'DESC'], 1);
+
+        return $comments[0] ?? null;
+    }
 }

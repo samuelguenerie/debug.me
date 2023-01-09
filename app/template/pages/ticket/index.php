@@ -21,11 +21,13 @@
 
                 <footer class="d-flex justify-content-between">
                     <div>
-                        <?= count($ticket->getComments()) ?> réponses
+                        <?= count($ticket->getComments()) ?> réponse<?php if (count($ticket->getComments()) > 1): ?>s<?php endif; ?>
                     </div>
-                    <div>
-                        Dernière réponse le <?= $serviceDate->convertDateInFrench($ticket->getCreatedAt()) ?>
-                    </div>
+                    <?php if (!empty($ticket->getLastReply())): ?>
+                        <div>
+                            Dernière réponse le <?= $serviceDate->convertDateInFrench($ticket->getLastReply()->getCreatedAt()) ?>
+                        </div>
+                    <?php endif; ?>
                 </footer>
             </article>
         <?php } ?>
