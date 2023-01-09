@@ -48,23 +48,26 @@
 
             <?php if (count($data['ticket']->getComments()) > 0): ?>
                 <?php foreach ($data['ticket']->getComments() as $comment): ?>
-                    <article class="mb-3">
-                        <?= $comment->getContent() ?>
+                    <article class="mb-5">
+                        <div class="row">
+                            <div class="col-12 col-sm-10">
+                                <?= $comment->getContent() ?>
 
-                        <footer class="d-flex justify-content-between text-secondary">
-                            <div>
-                                Posté par <?= $comment->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?>
+                                <footer class="text-secondary">
+                                    Posté par <?= $comment->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?>
+                                </footer>
                             </div>
-                            <div>
+
+                            <div class="col-12 col-sm-2">
                                 <a
-                                    href="?page=ticket_comment_score_increment&id=<?= $comment->getId() ?>"
+                                        href="?page=ticket_comment_score_increment&id=<?= $comment->getId() ?>"
                                     <?php if (!empty($sessionUser) && !empty($comment->getScoreFromUser($sessionUser)) && $comment->getScoreFromUser($sessionUser)->getScore() > 0): ?>
                                         class="btn btn-primary disabled"
                                         aria-disabled="true"
                                     <?php else: ?>
                                         class="btn btn-primary"
                                     <?php endif; ?>
-                                    role="button"
+                                        role="button"
                                 >
                                     +
                                 </a>
@@ -72,30 +75,34 @@
                                 <?= $comment->getScore() ?>
 
                                 <a
-                                    href="?page=ticket_comment_score_decrement&id=<?= $comment->getId() ?>"
+                                        href="?page=ticket_comment_score_decrement&id=<?= $comment->getId() ?>"
                                     <?php if (!empty($sessionUser) && !empty($comment->getScoreFromUser($sessionUser)) && $comment->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
                                         class="btn btn-danger disabled"
                                         aria-disabled="true"
                                     <?php else: ?>
                                         class="btn btn-danger"
                                     <?php endif; ?>
-                                    role="button"
+                                        role="button"
                                 >
                                     -
                                 </a>
                             </div>
-                        </footer>
+                        </div>
+
 
                         <?php if (count($comment->getChild()) > 0): ?>
                             <?php foreach ($comment->getChild() as $child): ?>
-                                <article class="ps-5">
-                                    <?= $child->getContent() ?>
+                                <article class="my-3">
+                                    <div class="row">
+                                        <div class="col-12 col-sm-10 ps-5">
+                                            <?= $child->getContent() ?>
 
-                                    <footer class="d-flex justify-content-between text-secondary">
-                                        <div>
-                                            Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?>
+                                            <footer class="text-secondary">
+                                                Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?>
+                                            </footer>
                                         </div>
-                                        <div>
+
+                                        <div class="col-12 col-sm-2">
                                             <a
                                                     href="?page=ticket_comment_score_increment&id=<?= $child->getId() ?>"
                                                 <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() > 0): ?>
@@ -124,7 +131,7 @@
                                                 -
                                             </a>
                                         </div>
-                                    </footer>
+                                    </div>
                                 </article>
                             <?php endforeach; ?>
                         <?php endif; ?>
