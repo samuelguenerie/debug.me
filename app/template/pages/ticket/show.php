@@ -38,7 +38,7 @@
 
     <img src="<?= $data['ticket']->getImage() ?>">
 
-    <p>Posté le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?> par <?= $data['ticket']->getUser()->getUsername() ?> | <?= $data['ticket']->getUser()->getPoints() ?> point<?php if ($data['ticket']->getUser()->getPoints() > 1): ?>s<?php endif; ?></p>
+    <p>Posté par <?= $data['ticket']->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?></p>
 
     <hr>
 
@@ -53,7 +53,7 @@
 
                         <footer class="d-flex justify-content-between text-secondary">
                             <div>
-                                Posté par <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?> par <?= $comment->getUser()->getUsername() ?>
+                                Posté par <?= $comment->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?>
                             </div>
                             <div>
                                 <a
@@ -93,7 +93,7 @@
 
                                     <footer class="d-flex justify-content-between text-secondary">
                                         <div>
-                                            Posté par <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?> par <?= $child->getUser()->getUsername() ?>
+                                            Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?>
                                         </div>
                                         <div>
                                             <a
