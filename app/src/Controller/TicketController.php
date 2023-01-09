@@ -365,8 +365,19 @@ class TicketController extends AbstractController {
             $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
             if (!$userSession->getIsBlocked()) {
-                if (!empty($_GET['id']) && !empty($_GET['comment_id'])) {
-                    $ticketId = $_GET['id'];
+                if (!empty($_GET['id'])) {
+                    $commentId = $_GET['id'];
+                    $commentManager = new CommentManager();
+                    /** @var Comment $comment */
+                    $comment = $commentManager->find($commentId);
+
+                    if (!$comment) {
+                        throw new Exception("Comment with id $commentId not found.");
+                    } elseif ($comment->getUser() !== $userSession) {
+                        throw new Exception("User " . $userSession->getUsername() . " isn't the author of comment with id $commentId.");
+                    }
+
+                    $ticketId = $comment->getTicket()->getId();
                     $ticketManager = new TicketManager();
                     /** @var Ticket $ticket */
                     $ticket = $ticketManager->find($ticketId);
@@ -378,16 +389,6 @@ class TicketController extends AbstractController {
                     }
 
                     if (!empty($_POST)) {
-                        $commentId = $_GET['comment_id'];
-                        $commentManager = new CommentManager();
-                        $comment = $commentManager->find($commentId);
-
-                        if (!$comment) {
-                            throw new Exception("Comment with id $commentId not found.");
-                        } elseif ($comment->getUser() !== $userSession) {
-                            throw new Exception("User " . $userSession->getUsername() . " isn't the author of comment with id $commentId.");
-                        }
-
                         $comment->setContent($_POST['content']);
 
                         $commentManager->edit($comment);
@@ -398,7 +399,7 @@ class TicketController extends AbstractController {
                     throw new Exception('Post data required.');
                 }
 
-                throw new Exception('Parameter id and comment_id required in url.');
+                throw new Exception('Parameter id required in url.');
             }
 
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");
@@ -418,19 +419,8 @@ class TicketController extends AbstractController {
             $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
 
             if (!$userSession->getIsBlocked()) {
-                if (!empty($_GET['id']) && !empty($_GET['comment_id'])) {
-                    $ticketId = $_GET['id'];
-                    $ticketManager = new TicketManager();
-                    /** @var Ticket $ticket */
-                    $ticket = $ticketManager->find($ticketId);
-
-                    if (!$ticket) {
-                        throw new Exception("Ticket with id $ticketId not found.");
-                    } elseif (!$ticket->getIsOpen()) {
-                        throw new Exception('Ticket closed.');
-                    }
-
-                    $commentId = $_GET['comment_id'];
+                if (!empty($_GET['id'])) {
+                    $commentId = $_GET['id'];
                     $commentManager = new CommentManager();
                     /** @var Comment $comment */
                     $comment = $commentManager->find($commentId);
@@ -441,12 +431,23 @@ class TicketController extends AbstractController {
                         throw new Exception("User " . $userSession->getUsername() . " isn't the author of comment with id $commentId.");
                     }
 
+                    $ticketId = $comment->getTicket()->getId();
+                    $ticketManager = new TicketManager();
+                    /** @var Ticket $ticket */
+                    $ticket = $ticketManager->find($ticketId);
+
+                    if (!$ticket) {
+                        throw new Exception("Ticket with id $ticketId not found.");
+                    } elseif (!$ticket->getIsOpen()) {
+                        throw new Exception('Ticket closed.');
+                    }
+
                     $commentManager->remove($comment);
 
                     return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
                 }
 
-                throw new Exception('Parameter id and comment_id required in url.');
+                throw new Exception('Parameter id required in url.');
             }
 
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");
