@@ -1,5 +1,5 @@
 <main class="container">
-    <header>
+    <header class="my-5">
         <h1>Éditer un ticket</h1>
     </header>
 

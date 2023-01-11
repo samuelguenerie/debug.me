@@ -3,3 +3,11 @@
 * {
     font-family: 'Roboto', Arial, 'Open Sans', sans-serif;
 }
+
+body {
+    background-color: #fffafa;
+}
+
+.underline {
+    border-bottom: 5px solid var(--bs-primary);
+}

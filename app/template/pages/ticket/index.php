@@ -1,20 +1,25 @@
 <main class="container">
-    <form action="" method="post" class="d-flex">
-        <input type="text" placeholder="Saisir un ticket à rechercher" name="search" id="search" <?php if (isset($_POST['search'])) { echo 'value="' . $_POST['search'] .'"'; } ?> class="form-control">
-        <input type="submit" value="Rechercher" class="btn btn-primary" role="button">
+    <form action="" method="post" class="row my-5">
+        <div class="col-12 col-sm-10">
+            <input type="text" placeholder="Saisir un ticket à rechercher" name="search" id="search" <?php if (isset($_POST['search'])) { echo 'value="' . $_POST['search'] .'"'; } ?> class="form-control">
+        </div>
+
+        <div class="col-12 col-sm-2">
+            <input type="submit" value="Rechercher" class="btn btn-primary" role="button">
+        </div>
     </form>
 
-    <header>
+    <header class="mb-5">
         <h1>Liste des tickets</h1>
     </header>
 
-    <a href="index.php?page=ticket_add" class="btn btn-primary" role="button">Ajouter un ticket</a>
+    <a href="index.php?page=ticket_add" class="btn btn-primary mb-5" role="button">Ajouter un ticket</a>
 
     <?php if (count($data['tickets']) > 0): ?>
         <?php foreach ($data['tickets'] as $ticket) { ?>
-            <article>
+            <article class="mb-4">
                 <header>
-                    <a href="index.php?page=ticket_show&id=<?= $ticket->getId() ?>">
+                    <a href="index.php?page=ticket_show&id=<?= $ticket->getId() ?>" class="text-decoration-none">
                         <h2><?= $ticket->getTitle() ?></h2>
                     </a>
                 </header>
