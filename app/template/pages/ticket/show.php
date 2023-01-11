@@ -54,7 +54,7 @@
                                 <?= $comment->getContent() ?>
 
                                 <footer class="text-secondary">
-                                    Posté par <?= $comment->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?><?php if ($sessionUser->getIsModerator()): ?> | <a href="index.php?page=ticket_comment_delete&id=<?= $comment->getId() ?>">Supprimer le commentaire</a><?php endif; ?>
+                                    Posté par <?= $comment->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($comment->getCreatedAt()) ?><?php if (!empty($sessionUser) && $sessionUser->getIsModerator()): ?> | <a href="index.php?page=ticket_comment_delete&id=<?= $comment->getId() ?>">Supprimer le commentaire</a><?php endif; ?>
                                 </footer>
                             </div>
 
@@ -98,7 +98,7 @@
                                             <?= $child->getContent() ?>
 
                                             <footer class="text-secondary">
-                                                Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?><?php if ($sessionUser->getIsModerator()): ?> | <a href="index.php?page=ticket_comment_delete&id=<?= $child->getId() ?>">Supprimer le commentaire</a><?php endif; ?>
+                                                Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?><?php if (!empty($sessionUser) && $sessionUser->getIsModerator()): ?> | <a href="index.php?page=ticket_comment_delete&id=<?= $child->getId() ?>">Supprimer le commentaire</a><?php endif; ?>
                                             </footer>
                                         </div>
 
