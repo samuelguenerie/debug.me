@@ -7,6 +7,7 @@ use App\Manager\UserManager;
 use Exception;
 use Plugo\Controller\AbstractController;
 use Plugo\Services\Auth\Authenticator;
+use Plugo\Services\Flash\Toast;
 
 class ModerationController extends AbstractController
 {
@@ -38,7 +39,7 @@ class ModerationController extends AbstractController
                     ]);
                 }
 
-                throw new Exception('User ' . $userSession->getUsername() . ' is not moderator.');
+                return $this->redirectToRoute('home');
             }
 
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");

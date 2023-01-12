@@ -3,12 +3,18 @@
         <h1>Inscription</h1>
     </header>
 
+    <?php if (isset($data['error'])): ?>
+        <div class="alert alert-danger mb-5" role="alert">
+            <?= $data['error'] ?>
+        </div>
+    <?php endif; ?>
+
     <div class="row">
         <div class="col-12 col-lg-4">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="email" class="form-label fw-bold">Adresse e-mail</label>
-                    <input type="email" placeholder="Saisir votre adresse e-mail" name="email" id="email" required class="form-control">
+                    <input type="email" placeholder="Saisir votre adresse e-mail" name="email" id="email" required <?php if (isset($_POST['email'])) { echo 'value="' . $_POST['email'] .'"'; } ?> class="form-control">
                 </div>
 
                 <div class="mb-4">
@@ -23,7 +29,7 @@
 
                 <div class="mb-4">
                     <label for="username" class="form-label fw-bold">Pseudonyme</label>
-                    <input type="text" placeholder="Saisir votre pseudonyme" name="username" id="username" required class="form-control">
+                    <input type="text" placeholder="Saisir votre pseudonyme" name="username" id="username" required <?php if (isset($_POST['username'])) { echo 'value="' . $_POST['username'] .'"'; } ?> class="form-control">
                 </div>
 
                 <input type="submit" value="Valider" class="btn btn-primary" role="button">

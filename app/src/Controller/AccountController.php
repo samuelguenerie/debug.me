@@ -7,6 +7,7 @@ use App\Manager\UserManager;
 use Exception;
 use Plugo\Controller\AbstractController;
 use Plugo\Services\Auth\Authenticator;
+use Plugo\Services\Flash\Toast;
 
 class AccountController extends AbstractController
 {
@@ -39,7 +40,10 @@ class AccountController extends AbstractController
                     throw new Exception('User ' . $user->getEmail() . ' can\'t be add.');
                 }
 
-                throw new Exception('Password and password confirmation doesn\'t match.');
+                return $this->renderView('account/register.php', [
+                    'title' => 'Inscription',
+                    'error' => 'La combination du mot de passe et de sa confirmation ne fonctionne pas.'
+                ]);
             }
 
             return $this->renderView('account/register.php', [
@@ -80,13 +84,22 @@ class AccountController extends AbstractController
                             }
                         }
 
-                        throw new Exception('Invalid password.');
+                        return $this->renderView('account/login.php', [
+                            'title' => 'Connexion',
+                            'error' => 'L\'adresse e-mail ou le mot de passe est erroné.'
+                        ]);
                     }
 
-                    throw new Exception("User " . $user->getUsername() . " is blocked.");
+                    return $this->renderView('account/login.php', [
+                        'title' => 'Connexion',
+                        'error' => 'Ce compte est bloqué.'
+                    ]);
                 }
 
-                throw new Exception("User with email $email not found.");
+                return $this->renderView('account/login.php', [
+                    'title' => 'Connexion',
+                    'error' => 'L\'adresse e-mail ou le mot de passe est erroné.'
+                ]);
             }
 
             return $this->renderView('account/login.php', [
@@ -157,7 +170,10 @@ class AccountController extends AbstractController
                 ]);
             }
 
-            throw new Exception("User " . $userSession->getUsername() . " is blocked.");
+            return $this->renderView('account/login.php', [
+                'title' => 'Gestion de mon compte',
+                'error' => 'Ce compte est bloqué.'
+            ]);
         }
 
         return $this->redirectToRoute('login');
