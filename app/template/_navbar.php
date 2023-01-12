@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand sticky-top bg-primary">
     <div class="container">
-        <a href="?page=home" class="navbar-brand">
+        <a href="index.php?page=home" class="navbar-brand">
             <img src="public/resources/logo.png" alt="Logo de debug.me" width="50" height="50">
         </a>
 
@@ -11,20 +11,20 @@
         <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a href="?page=home" class="nav-link text-white">Accueil</a>
+                    <a href="index.php?page=home" class="nav-link text-white">Accueil</a>
                 </li>
                 <li class="nav-item">
-                    <a href="?page=ticket_index" class="nav-link text-white">Tickets</a>
+                    <a href="index.php?page=ticket_index" class="nav-link text-white">Tickets</a>
                 </li>
             </ul>
 
             <ul class="navbar-nav">
                 <?php if (!isset($sessionUser)): ?>
                     <li class="nav-item">
-                        <a href="?page=register" class="nav-link text-white">Inscription</a>
+                        <a href="index.php?page=register" class="nav-link text-white">Inscription</a>
                     </li>
                     <li>
-                        <a href="?page=login" class="nav-link text-white">Connexion</a>
+                        <a href="index.php?page=login" class="nav-link text-white">Connexion</a>
                     </li>
                 <?php else: ?>
                     <?php if ($sessionUser->getIsModerator()): ?>
@@ -34,7 +34,7 @@
                             </a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="?page=moderation_user_index" class="dropdown-item">Liste des utilisateurs</a>
+                                    <a href="index.php?page=moderation_user_index" class="dropdown-item">Liste des utilisateurs</a>
                                 </li>
                             </ul>
                         </li>
@@ -42,10 +42,10 @@
                     <?php endif; ?>
 
                     <li class="nav-item">
-                        <a href="?page=account" class="nav-link text-white">Mon compte</a>
+                        <a href="index.php?page=account" class="nav-link text-white">Mon compte</a>
                     </li>
                     <li class="nav-item">
-                        <a href="?page=logout" class="nav-link text-white">Déconnexion</a>
+                        <a href="index.php?page=logout" class="nav-link text-white">Déconnexion</a>
                     </li>
                 <?php endif; ?>
             </ul>
