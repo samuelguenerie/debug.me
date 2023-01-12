@@ -4,8 +4,8 @@
     </header>
 
     <?php if (!empty($sessionUser)): ?>
-        <div class="mb-5">
-            <?php if ($sessionUser->getId() === $data['ticket']->getUser()->getId()): ?>
+        <?php if ($sessionUser->getId() === $data['ticket']->getUser()->getId()): ?>
+            <div class="mb-5">
                 <a href="index.php?page=ticket_edit&id=<?= $data['ticket']->getId() ?>" class="btn btn-primary" role="button">Éditer mon ticket</a>
                 <a href="#" id="close" class="btn btn-danger" role="button">Fermer mon ticket</a>
 
@@ -20,7 +20,9 @@
                         }
                     });
                 </script>
-            <?php elseif ($sessionUser->getIsModerator()): ?>
+            </div>
+        <?php elseif ($sessionUser->getIsModerator()): ?>
+            <div class="mb-5">
                 <a href="#" id="closeModerator" class="btn btn-danger" role="button">Fermer le ticket</a>
 
                 <script>
@@ -34,13 +36,25 @@
                         }
                     });
                 </script>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     <?php endif; ?>
 
-    <p><?= $data['ticket']->getContent() ?></p>
+    <?php if (!empty($data['ticket']->getImage())): ?>
+        <div class="row">
+            <div class="col-12 col-lg-8">
+                <?= $data['ticket']->getContent() ?>
+            </div>
 
-    <?php if (!empty($data['ticket']->getImage())): ?><img src="<?= $data['ticket']->getImage() ?>"><?php endif; ?>
+            <div class="col-12 col-lg-4">
+                <img src="<?= $data['ticket']->getImage() ?>" class="img-fluid" style="max-height: 500px;">
+            </div>
+        </div>
+    <?php else: ?>
+        <div>
+            <?= $data['ticket']->getContent() ?>
+        </div>
+    <?php endif; ?>
 
     <div class="my-5">
         <p>Posté par <?= $data['ticket']->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?></p>

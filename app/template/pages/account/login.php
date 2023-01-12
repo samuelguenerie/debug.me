@@ -24,5 +24,9 @@
                 <input type="submit" value="Valider" class="btn btn-primary" role="button">
             </form>
         </div>
+
+        <div class="col-12 col-lg-8 align-self-end">
+            <img src="public/resources/login.png" alt="Illustration de la connexion" class="img-fluid">
+        </div>
     </div>
 </main>

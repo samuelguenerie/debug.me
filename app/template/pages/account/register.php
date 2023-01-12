@@ -29,5 +29,9 @@
                 <input type="submit" value="Valider" class="btn btn-primary" role="button">
             </form>
         </div>
+
+        <div class="col-12 col-lg-8 align-self-end">
+            <img src="public/resources/register.png" alt="Illustration de l'inscription" class="img-fluid">
+        </div>
     </div>
 </main>

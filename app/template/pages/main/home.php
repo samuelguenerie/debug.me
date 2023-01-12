@@ -15,5 +15,9 @@
 
             <a href="index.php?page=ticket_add" class="btn btn-primary mt-4" role="button">Poser une question</a>
         </div>
+
+        <div class="col-12 col-lg-8 align-self-end">
+            <img src="public/resources/home.png" alt="Illustration de l'accueil" class="img-fluid">
+        </div>
     </div>
 </main>
