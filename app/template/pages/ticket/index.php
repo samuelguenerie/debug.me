@@ -26,7 +26,7 @@
 
                 <footer class="d-flex justify-content-between">
                     <div>
-                        <?= count($ticket->getComments()) ?> réponse<?php if (count($ticket->getComments()) > 1): ?>s<?php endif; ?>
+                        <?= count($ticket->getComments()) ?> réponse<?php if (count($ticket->getComments()) > 1): ?>s<?php endif; ?> | Posté par <?= $ticket->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($ticket->getCreatedAt()) ?>
                     </div>
                     <?php if (!empty($ticket->getLastReply())): ?>
                         <div>

@@ -57,7 +57,7 @@
     <?php endif; ?>
 
     <div class="my-5">
-        <p>Posté par <?= $data['ticket']->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?></p>
+        Posté par <?= $data['ticket']->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?>
 
         <hr>
     </div>
