@@ -27,6 +27,20 @@
                         <a href="?page=login" class="nav-link text-white">Connexion</a>
                     </li>
                 <?php else: ?>
+                    <?php if ($sessionUser->getIsModerator()): ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Modération
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a href="?page=moderation_user_index" class="dropdown-item">Liste des utilisateurs</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                    <?php endif; ?>
+
                     <li class="nav-item">
                         <a href="?page=account" class="nav-link text-white">Mon compte</a>
                     </li>

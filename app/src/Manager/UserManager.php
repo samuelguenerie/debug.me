@@ -4,8 +4,11 @@ namespace App\Manager;
 
 use App\Entity\User;
 use Exception;
+use PDO;
 use PDOStatement;
 use Plugo\Manager\AbstractManager;
+use Plugo\Services\Mapper\Mapper;
+use Plugo\Services\Security\Security;
 use ReflectionException;
 
 class UserManager extends AbstractManager {
@@ -49,6 +52,48 @@ class UserManager extends AbstractManager {
     public function findBy(array $filters, array $order = [], int $limit = null, int $offset = null): false|array
     {
         return $this->readMany(User::class, $filters, $order, $limit, $offset);
+    }
+
+    /**
+     * @param array $filters
+     * @param string|null $search
+     * @param array $order
+     * @param int|null $limit
+     * @param int|null $offset
+     * @return array|false
+     * @throws ReflectionException
+     */
+    public function search(array $filters, ?string $search = null, array $order = [], int $limit = null, int $offset = null): false|array
+    {
+        $class = User::class;
+
+        $query = 'SELECT * FROM ' . $this->classToTable($class);
+
+        $this->buildWhereClause($query, $filters);
+
+        if (empty($filters) && !empty($search)) {
+            $query .= " WHERE email LIKE '$search' OR username LIKE '$search'";
+        } elseif (!empty($search)) {
+            $query .= " AND (email LIKE '$search' OR username LIKE '$search')";
+        }
+
+        $this->buildOrderClause($query, $order);
+        $this->buildLimitClause($query, $limit, $offset);
+
+        $stmt = $this->executeQuery($query, $filters);
+
+        $stmt->setFetchMode(PDO::FETCH_ASSOC);
+
+        $result = $stmt->fetchAll();
+
+        $security = new Security();
+        $mapper = new Mapper();
+
+        foreach ($result as $key => $item) {
+            $result[$key] = $mapper->arrayToObject($security->secureXssVulnerabilities($item), $class);
+        }
+
+        return $result;
     }
 
     /**

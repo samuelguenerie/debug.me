@@ -71,7 +71,9 @@ class TicketManager extends AbstractManager {
 
         $this->buildWhereClause($query, $filters);
 
-        if (!empty($search)) {
+        if (empty($filters) && !empty($search)) {
+            $query .= " WHERE title LIKE '$search' OR content LIKE '$search'";
+        } elseif (!empty($search)) {
             $query .= " AND (title LIKE '$search' OR content LIKE '$search')";
         }
 

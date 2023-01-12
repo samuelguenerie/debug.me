@@ -22,8 +22,8 @@ class Security
             }
 
             return $output;
-        } else {
-            return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
         }
+
+        return htmlspecialchars($input, ENT_QUOTES, 'UTF-8');
     }
 }

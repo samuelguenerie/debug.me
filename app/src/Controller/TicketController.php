@@ -25,12 +25,10 @@ class TicketController extends AbstractController {
     {
         $ticketManager = new TicketManager();
 
-        if (!empty($_POST)) {
-            if (!empty($_POST['search'])) {
-                $search = '%' . $_POST['search'] . '%';
+        if (!empty($_POST) && !empty($_POST['search'])) {
+            $search = '%' . $_POST['search'] . '%';
 
-                $tickets = $ticketManager->search(['is_open' => 1], $search, ['created_at' => 'DESC']);
-            }
+            $tickets = $ticketManager->search(['is_open' => 1], $search, ['created_at' => 'DESC']);
         } else {
             $tickets = $ticketManager->findBy(['is_open' => 1], ['created_at' => 'DESC']);
         }

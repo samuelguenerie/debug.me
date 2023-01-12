@@ -30,8 +30,7 @@
 
     RewriteRule ^moderation/utilisateurs/?$ index.php?page=moderation_user_index [NC,QSA,L]
     RewriteRule ^moderation/utilisateurs/(.*)/bloquer/?$ index.php?page=moderation_user_block&id=$1 [NC,QSA,L]
-    RewriteRule ^moderation/utilisateurs/(.*)/$ index.php?page=moderation_user_show&id=$1 [NC,QSA,L]
-    RewriteRule ^moderation/utilisateurs/(.*)$ index.php?page=moderation_user_show&id=$1 [NC,QSA,L]
+    RewriteRule ^moderation/utilisateurs/(.*)/bloquer/?$ index.php?page=moderation_user_unblock&id=$1 [NC,QSA,L]
 </IfModule>
 
 Options All -Indexes -MultiViews

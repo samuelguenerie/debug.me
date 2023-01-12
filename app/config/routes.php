@@ -81,12 +81,12 @@ const ROUTES = [
         'controller' => App\Controller\ModerationController::class,
         'method' => 'userIndex'
     ],
-    'moderation_user_show' => [
-        'controller' => App\Controller\ModerationController::class,
-        'method' => 'userShow'
-    ],
     'moderation_user_block' => [
         'controller' => App\Controller\ModerationController::class,
         'method' => 'userBlock'
+    ],
+    'moderation_user_unblock' => [
+        'controller' => App\Controller\ModerationController::class,
+        'method' => 'userUnblock'
     ],
 ];

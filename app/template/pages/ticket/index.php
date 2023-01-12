@@ -16,7 +16,7 @@
     <a href="index.php?page=ticket_add" class="btn btn-primary mb-5" role="button">Ajouter un ticket</a>
 
     <?php if (count($data['tickets']) > 0): ?>
-        <?php foreach ($data['tickets'] as $ticket) { ?>
+        <?php foreach ($data['tickets'] as $ticket): ?>
             <article class="mb-4">
                 <header>
                     <a href="index.php?page=ticket_show&id=<?= $ticket->getId() ?>" class="text-decoration-none">
@@ -35,7 +35,7 @@
                     <?php endif; ?>
                 </footer>
             </article>
-        <?php } ?>
+        <?php endforeach; ?>
     <?php else: ?>
         <?php if (isset($_POST['search'])): ?>
             <p>Il n'y a aucun ticket correspond à votre recherche.</p>
