@@ -42,7 +42,9 @@ class AccountController extends AbstractController
                 throw new Exception('Password and password confirmation doesn\'t match.');
             }
 
-            return $this->renderView('account/register.php');
+            return $this->renderView('account/register.php', [
+                'title' => 'Inscription'
+            ]);
         }
 
         return $this->redirectToRoute('home');
@@ -87,7 +89,9 @@ class AccountController extends AbstractController
                 throw new Exception("User with email $email not found.");
             }
 
-            return $this->renderView('account/login.php');
+            return $this->renderView('account/login.php', [
+                'title' => 'Connexion'
+            ]);
         }
 
         return $this->redirectToRoute('home');
@@ -147,7 +151,10 @@ class AccountController extends AbstractController
                     return $this->redirectToRoute('account');
                 }
 
-                return $this->renderView('account/account.php', ['user' => $user]);
+                return $this->renderView('account/account.php', [
+                    'title' => 'Gestion de mon compte',
+                    'user' => $user
+                ]);
             }
 
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");

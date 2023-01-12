@@ -18,7 +18,9 @@ class MainController extends AbstractController {
      */
     public function termsOfUse(): string
     {
-        return $this->renderView('main/terms_of_use.php');
+        return $this->renderView('main/terms_of_use.php', [
+            'title' => 'Mentions légales'
+        ]);
     }
 
     /**
@@ -26,6 +28,8 @@ class MainController extends AbstractController {
      */
     public function privacyPolicy(): string
     {
-        return $this->renderView('main/privacy_policy.php');
+        return $this->renderView('main/privacy_policy.php', [
+            'title' => 'Politique de confidentialité'
+        ]);
     }
 }

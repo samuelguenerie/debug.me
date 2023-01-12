@@ -34,6 +34,7 @@ class TicketController extends AbstractController {
         }
 
         return $this->renderView('ticket/index.php', [
+            'title' => 'Liste des tickets',
             'tickets' => $tickets
         ]);
     }
@@ -110,7 +111,9 @@ class TicketController extends AbstractController {
                     throw new Exception('An error occurred with the ticket add.');
                 }
 
-                return $this->renderView('ticket/add.php');
+                return $this->renderView('ticket/add.php', [
+                    'title' => 'Ajouter un ticket'
+                ]);
             }
 
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");
@@ -164,7 +167,7 @@ class TicketController extends AbstractController {
                     }
 
                     return $this->renderView('ticket/edit.php', [
-                        'title' => $ticket->getTitle() . ' (édition)',
+                        'title' => $ticket->getTitle(),
                         'ticket' => $ticket
                     ]);
                 }
@@ -207,7 +210,9 @@ class TicketController extends AbstractController {
 
                     $ticketManager->edit($ticket);
 
-                    return $this->redirectToRoute('ticket_index');
+                    return $this->redirectToRoute('ticket_index', [
+                        'title' => 'Liste des tickets'
+                    ]);
                 }
 
                 throw new Exception('Parameter id required in url.');
@@ -248,7 +253,9 @@ class TicketController extends AbstractController {
 
                     $ticketManager->edit($ticket);
 
-                    return $this->redirectToRoute('ticket_index');
+                    return $this->redirectToRoute('ticket_index', [
+                        'title' => 'Liste des tickets'
+                    ]);
                 }
 
                 throw new Exception('Parameter id required in url.');
@@ -293,7 +300,9 @@ class TicketController extends AbstractController {
 
                     $ticketManager->remove($ticket);
 
-                    return $this->redirectToRoute('ticket_index');
+                    return $this->redirectToRoute('ticket_index', [
+                        'title' => 'Liste des tickets'
+                    ]);
                 }
 
                 throw new Exception('Parameter id required in url.');

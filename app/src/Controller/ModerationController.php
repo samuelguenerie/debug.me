@@ -33,6 +33,7 @@ class ModerationController extends AbstractController
                     }
 
                     return $this->renderView('moderation/user/index.php', [
+                        'title' => 'Liste des utilisateurs',
                         'users' => $users
                     ]);
                 }
