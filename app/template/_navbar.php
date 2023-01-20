@@ -41,6 +41,10 @@
 
                     <?php endif; ?>
 
+                    <span class="navbar-text text-white opacity-75">
+                        Vous avez <?= $sessionUser->getPoints() ?> point<?php if ($sessionUser->getPoints() > 0): ?>s<?php endif ?>.
+                    </span>
+
                     <li class="nav-item">
                         <a href="index.php?page=account" class="nav-link text-white">Mon compte</a>
                     </li>
