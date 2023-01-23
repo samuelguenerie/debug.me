@@ -298,11 +298,22 @@ class TicketController extends AbstractController {
                         }
                     }
 
-                    $ticketManager->remove($ticket);
+                    if ($ticketManager->remove($ticket)) {
+                        $userManager = new UserManager();
+                        $user = $ticket->getUser();
 
-                    return $this->redirectToRoute('ticket_index', [
-                        'title' => 'Liste des tickets'
-                    ]);
+                        $user->decrementPoint();
+
+                        if ($userManager->edit($user)) {
+                            return $this->redirectToRoute('ticket_index', [
+                                'title' => 'Liste des tickets'
+                            ]);
+                        }
+
+                        throw new Exception('An error occurred with the user edit.');
+                    }
+
+                    throw new Exception('An error occurred with the user delete.');
                 }
 
                 throw new Exception('Parameter id required in url.');
@@ -350,13 +361,17 @@ class TicketController extends AbstractController {
                         $comment->setUser($user);
                         $comment->setTicket($ticket);
 
-                        $commentManager->add($comment);
+                        if ($commentManager->add($comment)) {
+                            $user->incrementPoint();
 
-                        $user->incrementPoint();
+                            if ($userManager->edit($user)) {
+                                return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                            }
 
-                        $userManager->edit($user);
+                            throw new Exception('An error occurred with the user edit.');
+                        }
 
-                        return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                        throw new Exception('An error occurred with the comment add.');
                     }
 
                     throw new Exception('Post data required.');
@@ -459,9 +474,20 @@ class TicketController extends AbstractController {
                         throw new Exception('Ticket closed.');
                     }
 
-                    $commentManager->remove($comment);
+                    if ($commentManager->remove($comment)) {
+                        $userManager = new UserManager();
+                        $user = $comment->getUser();
 
-                    return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                        $user->decrementPoint();
+
+                        if ($userManager->edit($user)) {
+                            return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                        }
+
+                        throw new Exception('An error occurred with the user edit.');
+                    }
+
+                    throw new Exception('An error occurred with the comment delete.');
                 }
 
                 throw new Exception('Parameter id required in url.');
