@@ -56,14 +56,14 @@
         </div>
     <?php endif; ?>
 
-    <div class="my-5">
+    <div class=" text-secondary my-5">
         Posté par <?= $data['ticket']->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($data['ticket']->getCreatedAt()) ?>
 
         <hr>
     </div>
 
     <div class="row">
-        <div class="col-12 col-lg-8">
+        <div class="col-12">
             <h2 class="mb-5">Commentaires</h2>
 
             <?php if (count($data['ticket']->getComments()) > 0): ?>
@@ -165,34 +165,34 @@
                                 <?php endforeach; ?>
                             <?php endif; ?>
 
-                            <?php if (!empty($sessionUser)): ?>
-                                <form action="index.php?page=ticket_comment_reply&id=<?= $comment->getId() ?>" method="post" class="my-3 ps-5">
-                                    <div class="mb-4">
-                                        <label for="content" class="form-label fw-bold">Répondre au commentaire</label>
-                                        <textarea rows="3" placeholder="Saisir votre message" name="content" id="content" required class="form-control"></textarea>
-                                    </div>
+                            <div class="my-3 ps-5">
+                                <?php if (!empty($sessionUser)): ?>
+                                    <form action="index.php?page=ticket_comment_reply&id=<?= $comment->getId() ?>" method="post">
+                                        <div class="mb-4">
+                                            <label for="content" class="form-label fw-bold">Répondre au commentaire</label>
+                                            <textarea rows="3" placeholder="Saisir votre message" name="content" id="content" required class="form-control"></textarea>
+                                        </div>
 
-                                    <input type="submit" value="Répondre" class="btn btn-primary" role="button">
-                                </form>
-                            <?php else: ?>
-                                <a href="index.php?page=login" class="btn btn-primary" role="button">Connectez-vous pour commenter</a>
-                            <?php endif; ?>
+                                        <input type="submit" value="Répondre" class="btn btn-primary" role="button">
+                                    </form>
+                                <?php else: ?>
+                                    <a href="index.php?page=login" class="btn btn-primary" role="button">Connectez-vous pour répondre au commentaire</a>
+                                <?php endif; ?>
+                            </div>
                         </section>
                     </article>
                 <?php endforeach; ?>
             <?php else: ?>
                 <p>Il n'y a aucun commentaire.</p>
             <?php endif; ?>
-        </div>
 
-        <div class="col-12 col-lg-4">
-            <h3 class="mb-5">Répondre au ticket</h3>
+            <hr>
 
             <?php if (!empty($sessionUser)): ?>
                 <form action="index.php?page=ticket_comment_add&id=<?= $data['ticket']->getId() ?>" method="post">
                     <div class="mb-4">
-                        <label for="content" class="form-label fw-bold">Message</label>
-                        <textarea rows="10" placeholder="Saisir votre message" name="content" id="content" required class="form-control"></textarea>
+                        <label for="content" class="form-label fw-bold">Répondre au ticket</label>
+                        <textarea rows="5" placeholder="Saisir votre message" name="content" id="content" required class="form-control"></textarea>
                     </div>
 
                     <input type="submit" value="Répondre" class="btn btn-primary" role="button">
