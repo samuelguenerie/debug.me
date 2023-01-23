@@ -81,6 +81,10 @@ const ROUTES = [
         'controller' => App\Controller\TicketController::class,
         'method' => 'commentScoreDecrement'
     ],
+    'ranking_index' => [
+        'controller' => App\Controller\RankingController::class,
+        'method' => 'index'
+    ],
     'moderation_user_index' => [
         'controller' => App\Controller\ModerationController::class,
         'method' => 'userIndex'

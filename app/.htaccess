@@ -29,6 +29,8 @@
     RewriteRule ^tickets/(.*)/$ index.php?page=ticket_show&id=$1 [NC,QSA,L]
     RewriteRule ^tickets/(.*)$ index.php?page=ticket_show&id=$1 [NC,QSA,L]
 
+    RewriteRule ^classement/?$ index.php?page=ranking [NC,QSA,L]
+
     RewriteRule ^moderation/utilisateurs/?$ index.php?page=moderation_user_index [NC,QSA,L]
     RewriteRule ^moderation/utilisateurs/(.*)/bloquer/?$ index.php?page=moderation_user_block&id=$1 [NC,QSA,L]
     RewriteRule ^moderation/utilisateurs/(.*)/bloquer/?$ index.php?page=moderation_user_unblock&id=$1 [NC,QSA,L]

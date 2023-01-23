@@ -16,6 +16,9 @@
                 <li class="nav-item">
                     <a href="index.php?page=ticket_index" class="nav-link text-white">Tickets</a>
                 </li>
+                <li class="nav-item">
+                    <a href="index.php?page=ranking_index" class="nav-link text-white">Classement</a>
+                </li>
             </ul>
 
             <ul class="navbar-nav">
