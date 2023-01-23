@@ -13,7 +13,11 @@
         <h1>Liste des tickets</h1>
     </header>
 
-    <a href="index.php?page=ticket_add" class="btn btn-primary mb-5" role="button">Ajouter un ticket</a>
+    <?php if (!empty($sessionUser)): ?>
+        <a href="index.php?page=ticket_add" class="btn btn-primary mb-5" role="button">Ajouter un ticket</a>
+    <?php else: ?>
+        <a href="index.php?page=login" class="btn btn-primary mb-5" role="button">Connectez-vous pour ajouter un ticket</a>
+    <?php endif; ?>
 
     <?php if (count($data['tickets']) > 0): ?>
         <?php foreach ($data['tickets'] as $ticket): ?>

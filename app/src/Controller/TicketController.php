@@ -119,7 +119,7 @@ class TicketController extends AbstractController {
             throw new Exception("User " . $userSession->getUsername() . " is blocked.");
         }
 
-        throw new Exception('User not logged');
+        return $this->redirectToRoute('login');
     }
 
     /**
