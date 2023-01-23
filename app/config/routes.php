@@ -61,6 +61,10 @@ const ROUTES = [
         'controller' => App\Controller\TicketController::class,
         'method' => 'commentAdd'
     ],
+    'ticket_comment_reply' => [
+        'controller' => App\Controller\TicketController::class,
+        'method' => 'commentReply'
+    ],
     'ticket_comment_edit' => [
         'controller' => App\Controller\TicketController::class,
         'method' => 'commentEdit'

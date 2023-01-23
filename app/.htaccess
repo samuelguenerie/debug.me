@@ -21,6 +21,7 @@
     RewriteRule ^tickets/(.*)/fermer/?$ index.php?page=ticket_close&id=$1 [NC,QSA,L]
     RewriteRule ^tickets/(.*)/supprimer/?$ index.php?page=ticket_delete&id=$1 [NC,QSA,L]
     RewriteRule ^tickets/(.*)/commentaires/ajouter/?$ index.php?page=ticket_comment_add&id=$1 [NC,QSA,L]
+    RewriteRule ^tickets/(.*)/commentaires/repondre/?$ index.php?page=ticket_comment_reply&id=$1 [NC,QSA,L]
     RewriteRule ^tickets/(.*)/commentaires/(.*)/modifier/?$ index.php?page=ticket_comment_edit&id=$1 [NC,QSA,L]
     RewriteRule ^tickets/(.*)/commentaires/(.*)/supprimer/?$ index.php?page=ticket_comment_delete&id=$1 [NC,QSA,L]
     RewriteRule ^tickets/(.*)/commentaires/(.*)/score/plus/?$ index.php?page=ticket_comment_score_increment&id=$1 [NC,QSA,L]

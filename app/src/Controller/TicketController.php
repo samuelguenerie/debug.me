@@ -390,6 +390,68 @@ class TicketController extends AbstractController {
      * @return null
      * @throws Exception
      */
+    public function commentReply(): null
+    {
+        if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {
+            /** @var User $userSession */
+            $userSession = $_SESSION[Authenticator::AUTHENTICATOR_USER];
+
+            if (!$userSession->getIsBlocked()) {
+                if (!empty($_GET['id'])) {
+                    $commentId = $_GET['id'];
+                    $commentManager = new CommentManager();
+                    /** @var Comment $comment */
+                    $comment = $commentManager->find($commentId);
+                    $ticket = $comment->getTicket();
+
+                    if (!$comment) {
+                        throw new Exception("Comment with id $commentId not found.");
+                    } elseif (!$ticket->getIsOpen()) {
+                        throw new Exception("Ticket closed.");
+                    }
+
+                    if (!empty($_POST)) {
+                        $reply = new Comment();
+
+                        $reply->setContent($_POST['content']);
+
+                        $userManager = new UserManager();
+                        /** @var User $user */
+                        $user = $userManager->find($userSession->getId());
+
+                        $reply->setTicket($ticket);
+                        $reply->setUser($user);
+                        $reply->setComment($comment);
+
+                        if ($commentManager->add($reply)) {
+                            $user->incrementPoint();
+
+                            if ($userManager->edit($user)) {
+                                return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
+                            }
+
+                            throw new Exception('An error occurred with the user edit.');
+                        }
+
+                        throw new Exception('An error occurred with the comment reply.');
+                    }
+
+                    throw new Exception('Post data required.');
+                }
+
+                throw new Exception('Parameter id required in url.');
+            }
+
+            throw new Exception("User " . $userSession->getUsername() . " is blocked.");
+        }
+
+        throw new Exception('User not logged');
+    }
+
+    /**
+     * @return null
+     * @throws Exception
+     */
     public function commentEdit(): null
     {
         if (!empty($_SESSION[Authenticator::AUTHENTICATOR_USER])) {

@@ -112,57 +112,72 @@
                         </div>
 
 
-                        <?php if (count($comment->getChild()) > 0): ?>
-                            <?php foreach ($comment->getChild() as $child): ?>
-                                <article class="my-3">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-10">
-                                            <div class="ps-5">
-                                                <?= $child->getContent() ?>
+                        <section>
+                            <?php if (count($comment->getChild()) > 0): ?>
+                                <?php foreach ($comment->getChild() as $child): ?>
+                                    <article class="my-3">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-10">
+                                                <div class="ps-5">
+                                                    <?= $child->getContent() ?>
 
-                                                <footer class="text-secondary mt-2">
-                                                    Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?><?php if (!empty($sessionUser) && $sessionUser->getIsModerator()): ?> | <a href="index.php?page=ticket_comment_delete&id=<?= $child->getId() ?>" class="text-decoration-none">Supprimer le commentaire</a><?php endif; ?>
-                                                </footer>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-lg-2 mt-2 mt-lg-0">
-                                            <div class="ps-5 ps-lg-0">
-                                                <a
-                                                        href="index.php?page=ticket_comment_score_increment&id=<?= $child->getId() ?>"
-                                                    <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() > 0): ?>
-                                                        class="btn btn-success disabled"
-                                                        aria-disabled="true"
-                                                    <?php else: ?>
-                                                        class="btn btn-success"
-                                                    <?php endif; ?>
-                                                        role="button"
-                                                >
-                                                    +
-                                                </a>
-
-                                                <div class="btn pe-none border border-secondary">
-                                                    <?= $child->getScore() ?>
+                                                    <footer class="text-secondary mt-2">
+                                                        Posté par <?= $child->getUser()->getUsername() ?> le <?= $serviceDate->convertDateInFrench($child->getCreatedAt()) ?><?php if (!empty($sessionUser) && $sessionUser->getIsModerator()): ?> | <a href="index.php?page=ticket_comment_delete&id=<?= $child->getId() ?>" class="text-decoration-none">Supprimer le commentaire</a><?php endif; ?>
+                                                    </footer>
                                                 </div>
+                                            </div>
 
-                                                <a
-                                                        href="index.php?page=ticket_comment_score_decrement&id=<?= $child->getId() ?>"
-                                                    <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
-                                                        class="btn btn-danger disabled"
-                                                        aria-disabled="true"
-                                                    <?php else: ?>
-                                                        class="btn btn-danger"
-                                                    <?php endif; ?>
-                                                        role="button"
-                                                >
-                                                    -
-                                                </a>
+                                            <div class="col-12 col-lg-2 mt-2 mt-lg-0">
+                                                <div class="ps-5 ps-lg-0">
+                                                    <a
+                                                            href="index.php?page=ticket_comment_score_increment&id=<?= $child->getId() ?>"
+                                                        <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() > 0): ?>
+                                                            class="btn btn-success disabled"
+                                                            aria-disabled="true"
+                                                        <?php else: ?>
+                                                            class="btn btn-success"
+                                                        <?php endif; ?>
+                                                            role="button"
+                                                    >
+                                                        +
+                                                    </a>
+
+                                                    <div class="btn pe-none border border-secondary">
+                                                        <?= $child->getScore() ?>
+                                                    </div>
+
+                                                    <a
+                                                            href="index.php?page=ticket_comment_score_decrement&id=<?= $child->getId() ?>"
+                                                        <?php if (!empty($sessionUser) && !empty($child->getScoreFromUser($sessionUser)) && $child->getScoreFromUser($sessionUser)->getScore() <= 0): ?>
+                                                            class="btn btn-danger disabled"
+                                                            aria-disabled="true"
+                                                        <?php else: ?>
+                                                            class="btn btn-danger"
+                                                        <?php endif; ?>
+                                                            role="button"
+                                                    >
+                                                        -
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
+                                    </article>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+
+                            <?php if (!empty($sessionUser)): ?>
+                                <form action="index.php?page=ticket_comment_reply&id=<?= $comment->getId() ?>" method="post" class="my-3 ps-5">
+                                    <div class="mb-4">
+                                        <label for="content" class="form-label fw-bold">Répondre au commentaire</label>
+                                        <textarea rows="3" placeholder="Saisir votre message" name="content" id="content" required class="form-control"></textarea>
                                     </div>
-                                </article>
-                            <?php endforeach; ?>
-                        <?php endif; ?>
+
+                                    <input type="submit" value="Répondre" class="btn btn-primary" role="button">
+                                </form>
+                            <?php else: ?>
+                                <a href="index.php?page=login" class="btn btn-primary" role="button">Connectez-vous pour commenter</a>
+                            <?php endif; ?>
+                        </section>
                     </article>
                 <?php endforeach; ?>
             <?php else: ?>
