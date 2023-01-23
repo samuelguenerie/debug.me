@@ -198,7 +198,7 @@
                     <input type="submit" value="Répondre" class="btn btn-primary" role="button">
                 </form>
             <?php else: ?>
-                <a href="index.php?page=login" class="btn btn-primary" role="button">Connectez-vous pour commenter</a>
+                <a href="index.php?page=login" class="btn btn-primary" role="button">Connectez-vous pour répondre au ticket</a>
             <?php endif; ?>
         </div>
     </div>
