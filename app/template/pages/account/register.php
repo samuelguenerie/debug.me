@@ -14,7 +14,7 @@
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="mb-4">
                     <label for="email" class="form-label fw-bold">Adresse e-mail</label>
-                    <input type="email" placeholder="Saisir votre adresse e-mail" name="email" id="email" required <?php if (isset($_POST['email'])) { echo 'value="' . $_POST['email'] .'"'; } ?> class="form-control">
+                    <input type="email" maxlength="255" placeholder="Saisir votre adresse e-mail" name="email" id="email" required <?php if (isset($_POST['email'])) { echo 'value="' . $_POST['email'] .'"'; } ?> class="form-control">
                 </div>
 
                 <div class="mb-4">
@@ -29,7 +29,7 @@
 
                 <div class="mb-4">
                     <label for="username" class="form-label fw-bold">Pseudonyme</label>
-                    <input type="text" placeholder="Saisir votre pseudonyme" name="username" id="username" required <?php if (isset($_POST['username'])) { echo 'value="' . $_POST['username'] .'"'; } ?> class="form-control">
+                    <input type="text" maxlength="255" placeholder="Saisir votre pseudonyme" name="username" id="username" required <?php if (isset($_POST['username'])) { echo 'value="' . $_POST['username'] .'"'; } ?> class="form-control">
                 </div>
 
                 <input type="submit" value="Valider" class="btn btn-primary" role="button">

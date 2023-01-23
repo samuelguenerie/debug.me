@@ -3,7 +3,7 @@
         <form action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="title" class="form-label fw-bold">Titre</label>
-                <input type="text" placeholder="Saisir le titre" name="title" id="title" required <?php if (isset($data['ticket'])) { echo 'value="' . $data['ticket']->getTitle() .'"'; } ?> class="form-control">
+                <input type="text" maxlength="255" placeholder="Saisir le titre" name="title" id="title" required <?php if (isset($data['ticket'])) { echo 'value="' . $data['ticket']->getTitle() .'"'; } ?> class="form-control">
             </div>
 
             <div class="mb-3">
